@@ -1,0 +1,134 @@
+﻿@model Hnatob.Domain.Models.Event
+@using Hnatob.Domain.Helper
+@{ViewBag.Title = "Edit";}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Event</h4>
+        <hr />
+        <div class="form-row">
+            <div class="col-md-7">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.Id)
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Access, htmlAttributes: new { @class = "control-label" })
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary">@Access.Public</button>
+                        <button type="button" id="Access" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">@Access.Private</a>
+                            <a class="dropdown-item" href="#">@Access.Public</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Prefix, htmlAttributes: new { @class = "control-label" })
+                    @Html.ValidationMessageFor(model => model.Prefix, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.Prefix, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label" })
+                    @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Location, htmlAttributes: new { @class = "control-label" })
+                    @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Start, htmlAttributes: new { @class = "control-label" })
+                    @Html.ValidationMessageFor(model => model.Start, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.Start, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            @*---------------------------------------------------------------------------------------------------------------------*@
+            <div class="col-md-5">
+                <div>
+                    @Html.Label(EPosition.Producer.ToString(), htmlAttributes: new { @class = "control-label" })
+                    <div class="btn-group float-right">
+                        <button type="button" class="btn btn-primary btn-sm">@EPosition.Producer.ToString()</button>
+                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only"></span>
+                        </button>
+                        <div class="dropdown-menu">
+                            <label class="dropdown-item" href="#">Action</label>
+                            <label class="dropdown-item" href="#">Action2</label>
+                            <div class="dropdown-divider"></div>
+                            <label class="dropdown-item" href="#">Separated link</label>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    @Html.Label(EPosition.Conductor.ToString(), htmlAttributes: new { @class = "control-label" })
+                    <div class="btn-group float-right">
+                        <button type="button" class="btn btn-primary btn-sm">@EPosition.Producer.ToString()</button>
+                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <div class="dropdown-menu">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    @Html.Label(EPosition.LightingDesigner.ToString(), htmlAttributes: new { @class = "control-label" })
+                    <div class="btn-group float-right">
+                        <button type="button" class="btn btn-primary btn-sm">@EPosition.Producer.ToString()</button>
+                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <div class="dropdown-menu">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    @Html.Label(EPosition.SoundEngineer.ToString(), htmlAttributes: new { @class = "control-label" })
+                    <div class="btn-group float-right">
+                        <button type="button" class="btn btn-primary btn-sm">@EPosition.Producer.ToString()</button>
+                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <div class="dropdown-menu">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    @Html.Label(EPosition.Accompanist.ToString(), htmlAttributes: new { @class = "control-label" })
+                    <div class="btn-group float-right">
+                        <button type="button" class="btn btn-primary btn-sm">@EPosition.Producer.ToString()</button>
+                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <div class="dropdown-menu">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                @Html.ActionLink("Back to List", "Schedule", null, new { @class = "btn btn-default btn-dark" })
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+
+}
+
+

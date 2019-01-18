@@ -1,0 +1,67 @@
+﻿@model IEnumerable<Hnatob.Domain.Models.Event>
+@{ViewBag.Title = "Schedele";}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Access)
+        </th>
+        <th>
+            Day
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Duration)
+        </th>
+        <th>
+            Time
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Location)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Access)
+            </td>
+            <th>
+                @*@Html.DisplayFor(modelItem => item.Start.Date.ToShortDateString())-*@
+                @item.Start.Date.ToShortDateString()
+            </th>
+            <th>
+                @Html.DisplayFor(modelItem => item.Start.TimeOfDay)
+            </th>
+            <th>
+                @Html.DisplayFor(modelItem => item.Duration.TimeOfDay)
+            </th>
+            <td>
+                @Html.DisplayFor(modelItem => item.Prefix)
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            @*<td class="btn-group">
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-warning" }) |
+                    @Html.ActionLink("Details", "Details", item, new { @class = "btn btn-info" }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                </td>*@
+        </tr>
+    }
+
+</table>
+
+<p>
+    @Html.ActionLink("Create New", "Edit", null, new { @class = "btn btn-primary" })
+</p>
