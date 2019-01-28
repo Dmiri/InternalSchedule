@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 // Project
 using Hnatob.Domain.Abstract;
-using Hnatob.Domain.Models;
 
 namespace Hnatob.Domain.Concrete
 {
@@ -38,7 +37,6 @@ namespace Hnatob.Domain.Concrete
 
             if (_event.Id == 0)
             {
-                _event.Responsibles = new List<IRole>();
                 context.Events.Add(_event);
             }
 

@@ -8,12 +8,13 @@ namespace Hnatob.Domain.Helper
 {
     public enum EPosition
     {
-        NON,
+        NON = 0,
         Director,
         DeputyDirector,
         Manager,
         Actor,
         Conductor,
+        Choirmaster,
         Producer,
         Accompanist,
         LightingDesigner,

@@ -22,11 +22,8 @@ C:\Users\D\source\repos\C#\Hnatob\Hnatob.Domain\bin\Debug\System.Web.Razor.xml
 C:\Users\D\source\repos\C#\Hnatob\Hnatob.Domain\bin\Debug\System.Web.WebPages.Deployment.xml
 C:\Users\D\source\repos\C#\Hnatob\Hnatob.Domain\bin\Debug\System.Web.Helpers.dll
 C:\Users\D\source\repos\C#\Hnatob\Hnatob.Domain\bin\Debug\System.Web.Helpers.xml
-C:\Users\D\source\repos\C#\Hnatob\Hnatob.Domain\obj\Debug\Hnatob.Domain.Migrations.InitialCreate.resources
+C:\Users\D\source\repos\C#\Hnatob\Hnatob.Domain\obj\Debug\Hnatob.Domain.Migrations.InitDb.resources
 C:\Users\D\source\repos\C#\Hnatob\Hnatob.Domain\obj\Debug\Hnatob.Domain.csproj.GenerateResource.Cache
-C:\Users\D\source\repos\C#\Hnatob\Hnatob.Domain\obj\Debug\Hnatob.Domain.Migrations.NewModel.resources
-C:\Users\D\source\repos\C#\Hnatob\Hnatob.Domain\obj\Debug\Hnatob.Domain.Migrations.AddRole.resources
-C:\Users\D\source\repos\C#\Hnatob\Hnatob.Domain\obj\Debug\Hnatob.Domain.Migrations.UpdateEvent.resources
-C:\Users\D\source\repos\C#\Hnatob\Hnatob.Domain\obj\Debug\Hnatob.Domain.Migrations.EditEvent.resources
-C:\Users\D\source\repos\C#\Hnatob\Hnatob.Domain\obj\Debug\Hnatob.Domain.Migrations.EditRoleAndAddEmployee.resources
-C:\Users\D\source\repos\C#\Hnatob\Hnatob.Domain\obj\Debug\Hnatob.Domain.Migrations.EventUpdate.resources
+C:\Users\D\source\repos\C#\Hnatob\Hnatob.Domain\obj\Debug\Hnatob.Domain.Migrations.CreateMtoM.resources
+C:\Users\D\source\repos\C#\Hnatob\Hnatob.Domain\obj\Debug\Hnatob.Domain.Migrations.editMtoM.resources
+C:\Users\D\source\repos\C#\Hnatob\Hnatob.Domain\obj\Debug\Hnatob.Domain.Migrations.editMtoM2.resources

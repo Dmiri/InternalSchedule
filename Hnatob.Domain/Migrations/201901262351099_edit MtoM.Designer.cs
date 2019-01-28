@@ -7,13 +7,13 @@ namespace Hnatob.Domain.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class InitialCreate : IMigrationMetadata
+    public sealed partial class editMtoM : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialCreate));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(editMtoM));
         
         string IMigrationMetadata.Id
         {
-            get { return "201811111336594_InitialCreate"; }
+            get { return "201901262351099_edit MtoM"; }
         }
         
         string IMigrationMetadata.Source

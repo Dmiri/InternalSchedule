@@ -68,49 +68,37 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Concrete\Employee.cs" />
+    <Compile Include="Helper\Employee.cs" />
     <Compile Include="Abstract\IEvent.cs" />
     <Compile Include="Abstract\IPeopleRepository.cs" />
     <Compile Include="Abstract\IPerson.cs" />
-    <Compile Include="Abstract\IRole.cs" />
     <Compile Include="Abstract\ScheduleRepository.cs" />
     <Compile Include="Concrete\EfDbContext.cs" />
     <Compile Include="Concrete\EfPeopleRepository.cs" />
     <Compile Include="Concrete\EfScheduleRepository.cs" />
     <Compile Include="Helper\Access.cs" />
     <Compile Include="Helper\EPosition.cs" />
-    <Compile Include="Migrations\201811111336594_InitialCreate.cs" />
-    <Compile Include="Migrations\201811111336594_InitialCreate.Designer.cs">
-      <DependentUpon>201811111336594_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\201901251404171_InitDb.cs" />
+    <Compile Include="Migrations\201901251404171_InitDb.Designer.cs">
+      <DependentUpon>201901251404171_InitDb.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201811121506566_NewModel.cs" />
-    <Compile Include="Migrations\201811121506566_NewModel.Designer.cs">
-      <DependentUpon>201811121506566_NewModel.cs</DependentUpon>
+    <Compile Include="Migrations\201901260045564_Create MtoM.cs" />
+    <Compile Include="Migrations\201901260045564_Create MtoM.Designer.cs">
+      <DependentUpon>201901260045564_Create MtoM.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201811130037197_AddRole.cs" />
-    <Compile Include="Migrations\201811130037197_AddRole.Designer.cs">
-      <DependentUpon>201811130037197_AddRole.cs</DependentUpon>
+    <Compile Include="Migrations\201901262351099_edit MtoM.cs" />
+    <Compile Include="Migrations\201901262351099_edit MtoM.Designer.cs">
+      <DependentUpon>201901262351099_edit MtoM.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201811171211067_UpdateEvent.cs" />
-    <Compile Include="Migrations\201811171211067_UpdateEvent.Designer.cs">
-      <DependentUpon>201811171211067_UpdateEvent.cs</DependentUpon>
+    <Compile Include="Migrations\201901270101146_edit MtoM2.cs" />
+    <Compile Include="Migrations\201901270101146_edit MtoM2.Designer.cs">
+      <DependentUpon>201901270101146_edit MtoM2.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201901132314384_Edit Event.cs" />
-    <Compile Include="Migrations\201901132314384_Edit Event.Designer.cs">
-      <DependentUpon>201901132314384_Edit Event.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201901140142291_EditRoleAndAddEmployee.cs" />
-    <Compile Include="Migrations\201901140142291_EditRoleAndAddEmployee.Designer.cs">
-      <DependentUpon>201901140142291_EditRoleAndAddEmployee.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201901152224475_EventUpdate.cs" />
-    <Compile Include="Migrations\201901152224475_EventUpdate.Designer.cs">
-      <DependentUpon>201901152224475_EventUpdate.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Models\ModelForEvent.cs" />
+    <Compile Include="Helper\Position.cs" />
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\Event.cs" />
-    <Compile Include="Models\Person.cs" />
-    <Compile Include="Concrete\Role.cs" />
+    <Compile Include="Concrete\Event.cs" />
+    <Compile Include="Concrete\Person.cs" />
     <Compile Include="Params\Access.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -119,26 +107,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201811111336594_InitialCreate.resx">
-      <DependentUpon>201811111336594_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201901251404171_InitDb.resx">
+      <DependentUpon>201901251404171_InitDb.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201811121506566_NewModel.resx">
-      <DependentUpon>201811121506566_NewModel.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201901260045564_Create MtoM.resx">
+      <DependentUpon>201901260045564_Create MtoM.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201811130037197_AddRole.resx">
-      <DependentUpon>201811130037197_AddRole.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201901262351099_edit MtoM.resx">
+      <DependentUpon>201901262351099_edit MtoM.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201811171211067_UpdateEvent.resx">
-      <DependentUpon>201811171211067_UpdateEvent.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201901132314384_Edit Event.resx">
-      <DependentUpon>201901132314384_Edit Event.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201901140142291_EditRoleAndAddEmployee.resx">
-      <DependentUpon>201901140142291_EditRoleAndAddEmployee.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201901152224475_EventUpdate.resx">
-      <DependentUpon>201901152224475_EventUpdate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201901270101146_edit MtoM2.resx">
+      <DependentUpon>201901270101146_edit MtoM2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

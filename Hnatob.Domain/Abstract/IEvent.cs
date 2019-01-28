@@ -37,7 +37,7 @@ namespace Hnatob.Domain.Abstract
         public string Location { get; set; }
 
         [Required(ErrorMessage = "Please, enter the start time")]
-        // [Range(DateTime.Now, DateTime.MaxValue, ErrorMessage = "Please, enter the start time")]
+        //[Range(DateTime.Now, DateTime.MaxValue, ErrorMessage = "Please, enter the start time")]
         public DateTime Start { get; set; }
 
         public DateTime Duration { get; set; }

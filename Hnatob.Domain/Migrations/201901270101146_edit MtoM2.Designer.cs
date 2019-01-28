@@ -7,13 +7,13 @@ namespace Hnatob.Domain.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class EditRoleAndAddEmployee : IMigrationMetadata
+    public sealed partial class editMtoM2 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(EditRoleAndAddEmployee));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(editMtoM2));
         
         string IMigrationMetadata.Id
         {
-            get { return "201901140142291_EditRoleAndAddEmployee"; }
+            get { return "201901270101146_edit MtoM2"; }
         }
         
         string IMigrationMetadata.Source

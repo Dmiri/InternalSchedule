@@ -6,16 +6,57 @@ using System.Threading.Tasks;
 
 // Project
 using Hnatob.Domain.Abstract;
+using Hnatob.Domain.Helper;
+
 
 namespace Hnatob.Domain.Concrete
 {
-    class EfPeopleRepository : IPeopleRepository
+    public class EfPeopleRepository : IPeopleRepository
     {
         EfDbContext context = new EfDbContext();
 
-        public IEnumerable<IPerson> People => context.People;
+        public override IEnumerable<Person> GetPeople() => context.People;
 
-        public IPerson DeletePerson(int personId)
+        // TODO: public override IEvent[] GetObject(params int[] iventId)
+        public Person GetObject(int iventId)
+        {
+            var dbEntry = context.People.Find(iventId);//FirstOrDefault
+            if (dbEntry != null)
+            {
+                return dbEntry;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public override void Update(Person person)
+        {
+
+            if (person == null) return;
+
+            if (person.Id == 0)
+            {
+                context.People.Add(person);
+            }
+
+            else
+            {
+                Person dbEntry = context.People.Find(person.Id);
+                if (dbEntry != null)
+                {
+                    dbEntry = person;
+                }
+                else
+                {
+                    //throw new Exception("Record didn't found");
+                }
+            }
+            context.SaveChanges();
+        }
+
+        public override Person Delete(int personId)
         {
             var dbEnry = context.People.Find(personId);
             if (dbEnry != null)
@@ -26,28 +67,12 @@ namespace Hnatob.Domain.Concrete
             return dbEnry;
         }
 
-        public void SavePerson(IPerson person)
-        {
-            if (person == null) return;
+        //===================================================================
 
-            if (person.Id == 0)
-            {
-                //context.People.Add(person);
-            }
+        public override IEnumerable<Position> GetPositions() => context.Positions;
 
-            else
-            {
-                var dbEntry = context.People.Find(person.Id);
-                if (dbEntry != null)
-                {
-                    //dbEntry = person;
-                }
-                else
-                {
-                    //throw new Exception("Person didn't found");
-                }
-            }
-            context.SaveChanges();
-        }
+        public override IEnumerable<Employee> GetEmployee() => context.PositionPersons;
+
+
     }
 }

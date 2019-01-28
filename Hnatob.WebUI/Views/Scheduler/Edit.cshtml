@@ -1,5 +1,8 @@
-﻿@model Hnatob.Domain.Models.Event
+﻿@model Hnatob.Domain.Concrete.Event
 @using Hnatob.Domain.Helper
+@using Hnatob.Domain.Models
+@using System.Collections.Generic;
+
 @{ViewBag.Title = "Edit";}
 
 
@@ -16,9 +19,10 @@
                 @Html.HiddenFor(model => model.Id)
                 <div class="form-group">
                     @Html.LabelFor(model => model.Access, htmlAttributes: new { @class = "control-label" })
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-primary">@Access.Public</button>
-                        <button type="button" id="Access" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <div class="dropdown btn-group">
+                        <input type="text" class="btn btn-info" placeholder="@Access.Private" value="@Access.Private" />
+                        @*<button type="button" class="btn btn-primary">@Access.Private</button>*@
+                        <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <div class="dropdown-menu">
@@ -27,7 +31,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="form-group">
                     @Html.LabelFor(model => model.Prefix, htmlAttributes: new { @class = "control-label" })
                     @Html.ValidationMessageFor(model => model.Prefix, "", new { @class = "text-danger" })
@@ -60,64 +63,141 @@
             </div>
             @*---------------------------------------------------------------------------------------------------------------------*@
             <div class="col-md-5">
+                @Html.Label("Responsibles:", new { @class = "control-label" })
                 <div>
-                    @Html.Label(EPosition.Producer.ToString(), htmlAttributes: new { @class = "control-label" })
-                    <div class="btn-group float-right">
-                        <button type="button" class="btn btn-primary btn-sm">@EPosition.Producer.ToString()</button>
+                    @Html.LabelFor(model => model.Producer, htmlAttributes: new { @class = "control-label" })
+                    <div class="dropdown btn-group float-right">
+                        <input type="text" class="btn btn-info btn-sm" placeholder="@EPosition.Producer.ToString()" value="@Model.Producer.ToString()" />
                         <button type="button" class="btn btn-primary btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="sr-only"></span>
                         </button>
-                        <div class="dropdown-menu">
-                            <label class="dropdown-item" href="#">Action</label>
-                            <label class="dropdown-item" href="#">Action2</label>
-                            <div class="dropdown-divider"></div>
-                            <label class="dropdown-item" href="#">Separated link</label>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            @{
+                                foreach (ModelForEvent item in ViewBag.Employees)
+                                {
+                                    if (item.Position == EPosition.Producer.ToString())
+                                    {
+                                        <label class="dropdown-item" href="#">@item.Name</label>
+                                    }
+                                }
+                            }
                         </div>
                     </div>
                 </div>
                 <div>
-                    @Html.Label(EPosition.Conductor.ToString(), htmlAttributes: new { @class = "control-label" })
-                    <div class="btn-group float-right">
-                        <button type="button" class="btn btn-primary btn-sm">@EPosition.Producer.ToString()</button>
+                    @Html.LabelFor(model => model.Conductor, htmlAttributes: new { @class = "control-label" })
+                    <div class="dropdown btn-group float-right">
+                        <input type="text" class="btn btn-info btn-sm" placeholder="@EPosition.Conductor.ToString()" value="@Model.Conductor.ToString()" />
                         <button type="button" class="btn btn-primary btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
-                        <div class="dropdown-menu">
+                        <div class="dropdown-menu dropdown-menu-right">
+                            @{
+                                foreach (ModelForEvent item in ViewBag.Employees)
+                                {
+                                    if (item.Position == EPosition.Conductor.ToString())
+                                    {
+                                        <label class="dropdown-item">@item.Name</label>
+                                    }
+                                }
+                            }
                         </div>
                     </div>
                 </div>
                 <div>
-                    @Html.Label(EPosition.LightingDesigner.ToString(), htmlAttributes: new { @class = "control-label" })
-                    <div class="btn-group float-right">
-                        <button type="button" class="btn btn-primary btn-sm">@EPosition.Producer.ToString()</button>
+                    @Html.LabelFor(model => model.Choirmaster, htmlAttributes: new { @class = "control-label" })
+                    <div class="dropdown btn-group float-right">
+                        <input type="text" class="btn btn-info btn-sm" placeholder="@Model.Choirmaster.ToString()" value="@Model.Choirmaster.ToString()" />
                         <button type="button" class="btn btn-primary btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
-                        <div class="dropdown-menu">
+                        <div class="dropdown-menu dropdown-menu-right">
+                            @{
+                                foreach (ModelForEvent item in ViewBag.Employees)
+                                {
+                                    if (item.Position == EPosition.Choirmaster.ToString())
+                                    {
+                                        <label class="dropdown-item" href="#">@item.Name</label>
+                                    }
+                                }
+                            }
                         </div>
                     </div>
                 </div>
                 <div>
-                    @Html.Label(EPosition.SoundEngineer.ToString(), htmlAttributes: new { @class = "control-label" })
-                    <div class="btn-group float-right">
-                        <button type="button" class="btn btn-primary btn-sm">@EPosition.Producer.ToString()</button>
+                    @Html.LabelFor(model => model.Accompanist, htmlAttributes: new { @class = "control-label" })
+                    <div class="dropdown btn-group float-right">
+                        <input type="text" class="btn btn-info btn-sm" placeholder="@EPosition.Accompanist.ToString()" value="@Model.Accompanist.ToString()" />
                         <button type="button" class="btn btn-primary btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
-                        <div class="dropdown-menu">
+                        <div class="dropdown-menu dropdown-menu-right">
+                            @{
+            foreach (ModelForEvent item in ViewBag.Employees)
+            {
+                if (item.Position == EPosition.Accompanist.ToString())
+                {
+                    <label class="dropdown-item" href="#">@item.Name</label>
+}
+}
+                            }
+
                         </div>
                     </div>
                 </div>
                 <div>
-                    @Html.Label(EPosition.Accompanist.ToString(), htmlAttributes: new { @class = "control-label" })
-                    <div class="btn-group float-right">
-                        <button type="button" class="btn btn-primary btn-sm">@EPosition.Producer.ToString()</button>
+                    @Html.LabelFor(model => model.LightingDesigner, htmlAttributes: new { @class = "control-label" })
+                    <div class="dropdown btn-group float-right">
+                        <input type="text" class="btn btn-info btn-sm" placeholder="@EPosition.LightingDesigner.ToString()" value="@Model.LightingDesigner.ToString()" />
                         <button type="button" class="btn btn-primary btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
-                        <div class="dropdown-menu">
+                        <div class="dropdown-menu dropdown-menu-right">
+                            @{
+                                foreach (ModelForEvent item in ViewBag.Employees)
+                                {
+                                    if (item.Position == EPosition.LightingDesigner.ToString())
+                                    {
+                                        <label class="dropdown-item" href="#">@item.Name</label>
+                                    }
+                                }
+                            }
                         </div>
                     </div>
+                </div>
+                <div>
+                    @Html.LabelFor(model => model.SoundEngineer, htmlAttributes: new { @class = "control-label" })
+                    <div class="dropdown btn-group float-right">
+                        <input type="text" class="btn btn-info btn-sm" placeholder="@EPosition.SoundEngineer.ToString()" value="@Model.SoundEngineer.ToString()" />
+                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            @{
+                                foreach (ModelForEvent item in ViewBag.Employees)
+                                {
+                                    if (item.Position == EPosition.SoundEngineer.ToString())
+                                    {
+                                        <label class="dropdown-item" href="#">@item.Name</label>
+                                    }
+                                }
+                            }
+
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    @Html.CheckBoxFor(model => model.Orchestra, new { @class = "form-check-label" })
+                    @Html.LabelFor(model => model.Orchestra, new { @class = "form-check-label" })
+                </div>
+                <div>
+                    @Html.CheckBoxFor(model => model.Choir, new { @class = "form-check-label" })
+                    @Html.LabelFor(model => model.Choir, new { @class = "form-check-label" })
+                </div>
+                <div>
+                    @Html.CheckBoxFor(model => model.Mimic, new { @class = "form-check-label" })
+                    @Html.LabelFor(model => model.Mimic, new { @class = "form-check-label" })
                 </div>
             </div>
         </div>
@@ -132,3 +212,25 @@
 }
 
 
+@section scripts {
+    <script type="text/javascript">
+        $('.dropdown').on('show.bs.dropdown', function (e) {
+            var value = this.querySelector('input.btn');
+            var menu = this.querySelector('.dropdown-menu');
+            var items = menu.querySelectorAll('.dropdown-item');
+
+            for (var i = 0; i < items.length; ++i)
+            {
+                console.log(items[i]);
+                items[i].addEventListener('click', function (event) { //e.children
+                console.log(event);
+                value.value = this.innerText;
+                });
+            }
+
+            // do something…
+        })
+
+
+    </script>
+}

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 // Project
 using Hnatob.Domain.Concrete;
-using Hnatob.Domain.Models;
 
 namespace Hnatob.Domain.Abstract
 {

@@ -7,13 +7,13 @@ namespace Hnatob.Domain.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class EditEvent : IMigrationMetadata
+    public sealed partial class InitDb : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(EditEvent));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(InitDb));
         
         string IMigrationMetadata.Id
         {
-            get { return "201901132314384_Edit Event"; }
+            get { return "201901251404171_InitDb"; }
         }
         
         string IMigrationMetadata.Source

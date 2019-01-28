@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace Hnatob.Domain.Abstract
 {
@@ -12,6 +13,7 @@ namespace Hnatob.Domain.Abstract
         public string Name { get; set; }
         public string Patronymic { get; set; }
         public string Surname { get; set; }
+        [DataType(DataType.Date)]
         public DateTime Birthday { get; set; }
     }
 }
