@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=8.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.8.0.0\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -42,6 +45,9 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
@@ -78,6 +84,7 @@
     <Compile Include="Concrete\EfScheduleRepository.cs" />
     <Compile Include="Helper\Access.cs" />
     <Compile Include="Helper\EPosition.cs" />
+    <Compile Include="Helper\EventsType.cs" />
     <Compile Include="Migrations\201901251404171_InitDb.cs" />
     <Compile Include="Migrations\201901251404171_InitDb.Designer.cs">
       <DependentUpon>201901251404171_InitDb.cs</DependentUpon>
@@ -94,8 +101,55 @@
     <Compile Include="Migrations\201901270101146_edit MtoM2.Designer.cs">
       <DependentUpon>201901270101146_edit MtoM2.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\ModelForEvent.cs" />
+    <Compile Include="Migrations\201901292309511_editPageEdit.cs" />
+    <Compile Include="Migrations\201901292309511_editPageEdit.Designer.cs">
+      <DependentUpon>201901292309511_editPageEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901292314201_editPageEdit2.cs" />
+    <Compile Include="Migrations\201901292314201_editPageEdit2.Designer.cs">
+      <DependentUpon>201901292314201_editPageEdit2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901292355417_editPageEdit3.cs" />
+    <Compile Include="Migrations\201901292355417_editPageEdit3.Designer.cs">
+      <DependentUpon>201901292355417_editPageEdit3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902021250437_editPageEdit4.cs" />
+    <Compile Include="Migrations\201902021250437_editPageEdit4.Designer.cs">
+      <DependentUpon>201902021250437_editPageEdit4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902082350036_durationToInt.cs" />
+    <Compile Include="Migrations\201902082350036_durationToInt.Designer.cs">
+      <DependentUpon>201902082350036_durationToInt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902090024106_durationToInt2.cs" />
+    <Compile Include="Migrations\201902090024106_durationToInt2.Designer.cs">
+      <DependentUpon>201902090024106_durationToInt2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902112301493_testLazyLoading.cs" />
+    <Compile Include="Migrations\201902112301493_testLazyLoading.Designer.cs">
+      <DependentUpon>201902112301493_testLazyLoading.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902112311281_testLazyLoading2.cs" />
+    <Compile Include="Migrations\201902112311281_testLazyLoading2.Designer.cs">
+      <DependentUpon>201902112311281_testLazyLoading2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Helper\Position.cs" />
+    <Compile Include="Migrations\201902121811500_addEventsType.cs" />
+    <Compile Include="Migrations\201902121811500_addEventsType.Designer.cs">
+      <DependentUpon>201902121811500_addEventsType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902131159505_withoutPP.cs" />
+    <Compile Include="Migrations\201902131159505_withoutPP.Designer.cs">
+      <DependentUpon>201902131159505_withoutPP.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902132139200_reternMtoM.cs" />
+    <Compile Include="Migrations\201902132139200_reternMtoM.Designer.cs">
+      <DependentUpon>201902132139200_reternMtoM.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902140330095_renamePrefixToEventType.cs" />
+    <Compile Include="Migrations\201902140330095_renamePrefixToEventType.Designer.cs">
+      <DependentUpon>201902140330095_renamePrefixToEventType.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Concrete\Event.cs" />
     <Compile Include="Concrete\Person.cs" />
@@ -119,6 +173,45 @@
     <EmbeddedResource Include="Migrations\201901270101146_edit MtoM2.resx">
       <DependentUpon>201901270101146_edit MtoM2.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901292309511_editPageEdit.resx">
+      <DependentUpon>201901292309511_editPageEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901292314201_editPageEdit2.resx">
+      <DependentUpon>201901292314201_editPageEdit2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901292355417_editPageEdit3.resx">
+      <DependentUpon>201901292355417_editPageEdit3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902021250437_editPageEdit4.resx">
+      <DependentUpon>201902021250437_editPageEdit4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902082350036_durationToInt.resx">
+      <DependentUpon>201902082350036_durationToInt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902090024106_durationToInt2.resx">
+      <DependentUpon>201902090024106_durationToInt2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902112301493_testLazyLoading.resx">
+      <DependentUpon>201902112301493_testLazyLoading.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902112311281_testLazyLoading2.resx">
+      <DependentUpon>201902112311281_testLazyLoading2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902121811500_addEventsType.resx">
+      <DependentUpon>201902121811500_addEventsType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902131159505_withoutPP.resx">
+      <DependentUpon>201902131159505_withoutPP.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902132139200_reternMtoM.resx">
+      <DependentUpon>201902132139200_reternMtoM.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902140330095_renamePrefixToEventType.resx">
+      <DependentUpon>201902140330095_renamePrefixToEventType.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,0 +1,11 @@
+﻿@{ViewBag.Title = "Setting";}
+@*@model IEnumerable<Hnatob.Domain.Helper.EventsType>*@
+@model List<string>
+@foreach (var item in Model)
+{
+    <div class="row">
+        <input type="text" value="@item"/>
+        @*@Html.Editor(item)*@
+        @Html.ActionLink("Delete", "Delete", new { @*eventId = item.Id*@ }, new { @class = "btn btn-danger" })
+    </div>
+}

@@ -33,17 +33,16 @@
                 @Html.DisplayFor(modelItem => item.Access)
             </td>
             <th>
-                @*@Html.DisplayFor(modelItem => item.Start.Date.ToShortDateString())-*@
                 @item.Start.Date.ToShortDateString()
             </th>
             <th>
                 @Html.DisplayFor(modelItem => item.Start.TimeOfDay)
             </th>
             <th>
-                @Html.DisplayFor(modelItem => item.Duration.TimeOfDay)
+                @Html.DisplayFor(modelItem => item.Duration)
             </th>
             <td>
-                @Html.DisplayFor(modelItem => item.Prefix)
+                @Html.DisplayFor(modelItem => item.EventType)
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
@@ -52,11 +51,17 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
-            @*<td class="btn-group">
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-warning" }) |
-                    @Html.ActionLink("Details", "Details", item, new { @class = "btn btn-info" }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
-                </td>*@
+            <td class="btn-group">
+                @if (item.Start > DateTime.Now)
+                {
+                    @Html.ActionLink("Edit", "Edit", new { eventId = item.Id }, new { @class = "btn btn-warning"})
+                }
+                else
+                {
+                    @Html.ActionLink("Details", "Details", new { eventId = item.Id }, new { @class = "btn btn-info" })@*//TODU: create*@
+                }
+                @Html.ActionLink("Delete", "Delete", new { eventId = item.Id }, new { @class = "btn btn-danger" })
+            </td>
         </tr>
     }
 

@@ -9,8 +9,6 @@ using System.Threading.Tasks;
 
 // Project
 using Hnatob.Domain.Abstract;
-using Hnatob.Domain.Concrete;
-using Hnatob.Domain.Helper;
 
 namespace Hnatob.Domain.Concrete
 {
@@ -21,22 +19,34 @@ namespace Hnatob.Domain.Concrete
             ActorsId = new List<int>();
         }
 
-        public string Prefix { get; set; }
+        [Display(Name = "Type")]
+        //[RegularExpression(@"^[[]{}#^$.,'|\/\\?*@+()]", ErrorMessage = "Поле не может содержать цифры и символов []{}#^$.,'\"|/\\?*@+()]")]
+        public string EventType { get; set; }
 
-        //[Required(ErrorMessage = "Please, indicate who will be produce event")]
-        public int Producer { get; set; }
+        [Display(Name = "Producer")]
+        //[RegularExpression("[[]{}#^$.,'\"|/\\?*@+()]]", ErrorMessage = "Некорректное имя. Поле не может содержать цифры и символы []{}#^$.,'\"|/\\?*@+()]")]
+        [Required(ErrorMessage = "Please, indicate who will be produce event")]
+        public string Producer { get; set; }
 
-        public int Conductor { get; set; }
+        [Display(Name = "Conductor")]
+        //[RegularExpression("[[]{}#^$.,'\"|/\\?*@+()]]", ErrorMessage = "Некорректное имя. Поле не может содержать цифры и символы []{}#^$.,'\"|/\\?*@+()]")]
+        public string Conductor { get; set; }
 
-        public int Choirmaster { get; set; }
+        [Display(Name = "Choirmaster")]
+        //[RegularExpression("[[]{}#^$.,'\"|/\\?*@+()]]", ErrorMessage = "Некорректное имя. Поле не может содержать цифры и символы []{}#^$.,'\"|/\\?*@+()]")]
+        public string Choirmaster { get; set; }
 
-        public int Accompanist { get; set; }
+        [Display(Name = "Accompanist")]
+        //[RegularExpression("[[]{}#^$.,'\"|/\\?*@+()]]", ErrorMessage = "Некорректное имя. Поле не может содержать цифры и символы []{}#^$.,'\"|/\\?*@+()]")]
+        public string Accompanist { get; set; }
 
         [Display(Name = "Lighting Designer")]
-        public int LightingDesigner { get; set; }
+        //[RegularExpression("[[]{}#^$.,'\"|/\\?*@+()]]", ErrorMessage = "Некорректное имя. Поле не может содержать цифры и символы []{}#^$.,'\"|/\\?*@+()]")]
+        public string LightingDesigner { get; set; }
 
         [Display(Name = "Sound Engineer")]
-        public int SoundEngineer { get; set; }
+        //[RegularExpression("[[]{}#^$.,'\"|/\\?*@+()]]", ErrorMessage = "Некорректное имя. Поле не может содержать цифры и символы []{}#^$.,'\"|/\\?*@+()]")]
+        public string SoundEngineer { get; set; }
 
         public virtual List<int> ActorsId { get; set; }
 
@@ -47,5 +57,18 @@ namespace Hnatob.Domain.Concrete
 
         [Display(Name = "Mimic ensemble")]
         public bool Mimic { get; set; }
+
+
+        public Event ShallowCopy()
+        {
+            return (Event)this.MemberwiseClone();
+        }
+
+        public Event DeepCopy()
+        {
+            Event other = (Event)this.MemberwiseClone();
+            //TODU: add fild
+            return other;
+        }
     }
 }

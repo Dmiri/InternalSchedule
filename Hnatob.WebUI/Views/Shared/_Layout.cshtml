@@ -15,7 +15,7 @@
 
 </head>
 <body>
-    <div class="position-absolute">
+    <div class="position-absolute col-md-12">
         @if (TempData["Message"] != null)
         {
             <div class="alert alert-success alert-dismissable">
@@ -34,7 +34,8 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li>@Html.ActionLink("Schedule", "Schedule", "Scheduler", null, new { @class = "btn btn-dark" })</li>
-                @*<li>@Html.ActionLink("People", "People", "People", new { @class = "btn btn-dark" })</li>*@
+                <li>@Html.ActionLink("People", "Employees", "Employees", null, new { @class = "btn btn-dark" })</li>
+                <li>@Html.ActionLink("Stting", "Setting", "SetParams", null, new { @class = "btn btn-dark" })</li>
                 <li>@Html.ActionLink("Contact", "Contact", "Home", null, new { @class = "btn btn-dark" })</li>
                 <li>@Html.ActionLink("About", "About", "Home", null, new { @class = "btn btn-dark" })</li>
             </ul>

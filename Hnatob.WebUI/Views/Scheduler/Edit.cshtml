@@ -1,7 +1,6 @@
 ﻿@model Hnatob.Domain.Concrete.Event
 @using Hnatob.Domain.Helper
-@using Hnatob.Domain.Models
-@using System.Collections.Generic;
+@using Hnatob.WebUI.Models
 
 @{ViewBag.Title = "Edit";}
 
@@ -16,37 +15,60 @@
         <div class="form-row">
             <div class="col-md-7">
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                @Html.HiddenFor(model => model.Id)
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Access, htmlAttributes: new { @class = "control-label" })
-                    <div class="dropdown btn-group">
-                        <input type="text" class="btn btn-info" placeholder="@Access.Private" value="@Access.Private" />
-                        @*<button type="button" class="btn btn-primary">@Access.Private</button>*@
-                        <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">@Access.Private</a>
-                            <a class="dropdown-item" href="#">@Access.Public</a>
-                        </div>
-                    </div>
+                @Html.HiddenFor(model => model.Id, new { value = @Access.Private })
+
+                @Html.HiddenFor(model => model.Access)
+                <div class="btn-group btn-group-toggle btn-sm" data-toggle="buttons">
+                    <label class="btn btn-secondary active">
+                        <input class=" btn btn-sm" type="radio" name=@Access.Private autocomplete="off"> @Access.Private
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input class=" btn btn-sm" type="radio" name=@Access.Public autocomplete="off"> @Access.Public
+                    </label>
                 </div>
+
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Prefix, htmlAttributes: new { @class = "control-label" })
-                    @Html.ValidationMessageFor(model => model.Prefix, "", new { @class = "text-danger" })
-                    @Html.EditorFor(model => model.Prefix, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.LabelFor(model => model.EventType, htmlAttributes: new { @class = "control-label" })
+                    @Html.ValidationMessageFor(model => model.EventType, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.EventType, new { htmlAttributes = new { @class = "form-control" } })
                 </div>
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label" })
                     @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-                    @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                    <div class="dropdown btn-group">
+                        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", placeholder = @Model.Title } })
+                        <button type="button" class="btn btn-info btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only"> </span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            @{
+                                foreach (var item in ViewBag.TitleEvent)
+                                {
+                                    <label class="dropdown-item">@item</label>
+                                }
+                            }
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.Location, htmlAttributes: new { @class = "control-label" })
-                    @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
-                    @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger", placeholder = @Model.Location })
+                    <div class="dropdown btn-group">
+                        @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control" } })
+                        <button type="button" class="btn btn-info btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only"> </span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            @{
+            foreach (var item in ViewBag.Location)
+            {
+                    <label class="dropdown-item">@item</label>
+}
+                            }
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -56,121 +78,201 @@
                 </div>
 
                 <div class="form-group">
+                    @Html.HiddenFor(model => model.Duration, htmlAttributes: new { @class = "control-label" })
+                    @Html.LabelFor(model => model.Duration, htmlAttributes: new { @class = "control-label" })
+                    <input type="time" class="btn btn-info control-label" />
+                    @*<span class="validity"></span>*@
+                    @Html.ValidationMessageFor(model => model.Duration, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
                     @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
                     @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.TextAreaFor(model => model.Description, 3, 40, new { htmlAttributes = new { @class = "form-control" } })
                 </div>
             </div>
             @*---------------------------------------------------------------------------------------------------------------------*@
             <div class="col-md-5">
                 @Html.Label("Responsibles:", new { @class = "control-label" })
+                @*--------------------------------------------------------------------------------------*@
                 <div>
                     @Html.LabelFor(model => model.Producer, htmlAttributes: new { @class = "control-label" })
                     <div class="dropdown btn-group float-right">
-                        <input type="text" class="btn btn-info btn-sm" placeholder="@EPosition.Producer.ToString()" value="@Model.Producer.ToString()" />
+                        @Html.EditorFor(model => model.Producer, new
+            {
+                htmlAttributes = new
+                {
+                    @class = "form-control form-control-sm btn btn-sm btn-info",
+                    placeholder = @EPosition.Producer.ToString(),
+                    data_EmployeeId = ""
+                }
+            })
+                        @*<input type="text" class="btn btn-info btn-sm" placeholder="@EPosition.Producer.ToString()" value="@Model.Producer.ToString()" />*@
                         <button type="button" class="btn btn-primary btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="sr-only"></span>
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
                             @{
-                                foreach (ModelForEvent item in ViewBag.Employees)
-                                {
-                                    if (item.Position == EPosition.Producer.ToString())
-                                    {
-                                        <label class="dropdown-item" href="#">@item.Name</label>
-                                    }
-                                }
+                    foreach (ModelForEvent item in ViewBag.Employees)
+                    {
+                        if (item.Position == EPosition.Producer.ToString())
+                        {
+                            <label class="dropdown-item" data-personId="@item.Id.ToString()">@item.Name</label>
+            }
+        }
                             }
                         </div>
                     </div>
                 </div>
+                @Html.ValidationMessageFor(model => model.Producer, "", new { @class = "text-danger" })
+
+                @*--------------------------------------------------------------------------------------*@
                 <div>
                     @Html.LabelFor(model => model.Conductor, htmlAttributes: new { @class = "control-label" })
                     <div class="dropdown btn-group float-right">
-                        <input type="text" class="btn btn-info btn-sm" placeholder="@EPosition.Conductor.ToString()" value="@Model.Conductor.ToString()" />
+                        @Html.EditorFor(model => model.Conductor, new
+            {
+                htmlAttributes = new
+                {
+                    @class = "form-control form-control-sm btn btn-info btn-sm",
+                    placeholder = @EPosition.Conductor.ToString(),
+                    data_EmployeeId = ""
+                }
+            })
                         <button type="button" class="btn btn-primary btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="sr-only">Toggle Dropdown</span>
+                            <span class="sr-only"> </span>
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
                             @{
-                                foreach (ModelForEvent item in ViewBag.Employees)
-                                {
-                                    if (item.Position == EPosition.Conductor.ToString())
-                                    {
-                                        <label class="dropdown-item">@item.Name</label>
-                                    }
-                                }
+                    foreach (ModelForEvent item in ViewBag.Employees)
+                    {
+                        if (item.Position == EPosition.Conductor.ToString())
+                        {
+                            <label class="dropdown-item" data-personId="@item.Id.ToString()">@item.Name</label>
+            }
+        }
                             }
                         </div>
                     </div>
                 </div>
+                @Html.ValidationMessageFor(model => model.Conductor, "", new { @class = "text-danger" })
+
+
+                @*--------------------------------------------------------------------------------------*@
                 <div>
                     @Html.LabelFor(model => model.Choirmaster, htmlAttributes: new { @class = "control-label" })
                     <div class="dropdown btn-group float-right">
-                        <input type="text" class="btn btn-info btn-sm" placeholder="@Model.Choirmaster.ToString()" value="@Model.Choirmaster.ToString()" />
+                        @Html.EditorFor(model => model.Choirmaster, new
+            {
+                htmlAttributes = new
+                {
+                    @class = "form-control form-control-sm btn btn-info btn-sm",
+                    placeholder = @EPosition.Choirmaster.ToString(),
+                    data_EmployeeId = ""
+                }
+            })
                         <button type="button" class="btn btn-primary btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="sr-only">Toggle Dropdown</span>
+                            <span class="sr-only"> </span>
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
                             @{
-                                foreach (ModelForEvent item in ViewBag.Employees)
-                                {
-                                    if (item.Position == EPosition.Choirmaster.ToString())
-                                    {
-                                        <label class="dropdown-item" href="#">@item.Name</label>
-                                    }
-                                }
+                    foreach (ModelForEvent item in ViewBag.Employees)
+                    {
+                        if (item.Position == EPosition.Choirmaster.ToString())
+                        {
+                            <label class="dropdown-item" data-personId="@item.Id.ToString()">@item.Name</label>
+            }
+        }
                             }
                         </div>
                     </div>
                 </div>
+                @Html.ValidationMessageFor(model => model.Choirmaster, "", new { @class = "text-danger" })
+
+
+                @*--------------------------------------------------------------------------------------*@
                 <div>
                     @Html.LabelFor(model => model.Accompanist, htmlAttributes: new { @class = "control-label" })
                     <div class="dropdown btn-group float-right">
-                        <input type="text" class="btn btn-info btn-sm" placeholder="@EPosition.Accompanist.ToString()" value="@Model.Accompanist.ToString()" />
-                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="sr-only">Toggle Dropdown</span>
+                        @Html.EditorFor(model => model.Accompanist, new
+            {
+                htmlAttributes = new
+                {
+                    @class = "form-control form-control-sm btn btn-info btn-sm",
+                    placeholder = @EPosition.Accompanist.ToString(),
+                    data_EmployeeId = ""
+                }
+            })
+                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle dropdown-toggle-split"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only"> </span>
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
                             @{
-            foreach (ModelForEvent item in ViewBag.Employees)
-            {
-                if (item.Position == EPosition.Accompanist.ToString())
-                {
-                    <label class="dropdown-item" href="#">@item.Name</label>
-}
-}
+                    foreach (ModelForEvent item in ViewBag.Employees)
+                    {
+                        if (item.Position == EPosition.Accompanist.ToString())
+                        {
+                            <label class="dropdown-item" data-personId="@item.Id.ToString()">@item.Name</label>
+            }
+        }
                             }
 
                         </div>
                     </div>
                 </div>
+                @Html.ValidationMessageFor(model => model.Accompanist, "", new { @class = "text-danger" })
+
+
+                @*--------------------------------------------------------------------------------------*@
                 <div>
                     @Html.LabelFor(model => model.LightingDesigner, htmlAttributes: new { @class = "control-label" })
                     <div class="dropdown btn-group float-right">
-                        <input type="text" class="btn btn-info btn-sm" placeholder="@EPosition.LightingDesigner.ToString()" value="@Model.LightingDesigner.ToString()" />
-                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="sr-only">Toggle Dropdown</span>
+                        @Html.EditorFor(model => model.LightingDesigner, new
+            {
+                htmlAttributes = new
+                {
+                    @class = "form-control form-control-sm btn btn-info btn-sm",
+                    placeholder = @EPosition.LightingDesigner.ToString(),
+                    data_EmployeeId = ""
+                }
+            })
+                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle dropdown-toggle-split"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only"> </span>
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
                             @{
-                                foreach (ModelForEvent item in ViewBag.Employees)
-                                {
-                                    if (item.Position == EPosition.LightingDesigner.ToString())
-                                    {
-                                        <label class="dropdown-item" href="#">@item.Name</label>
-                                    }
-                                }
+                    foreach (ModelForEvent item in ViewBag.Employees)
+                    {
+                        if (item.Position == EPosition.LightingDesigner.ToString())
+                        {
+                            <label class="dropdown-item" data-personId="@item.Id.ToString()">@item.Name</label>
+            }
+        }
                             }
                         </div>
                     </div>
                 </div>
+                @Html.ValidationMessageFor(model => model.LightingDesigner, "", new { @class = "text-danger" })
+
+
+                @*--------------------------------------------------------------------------------------*@
                 <div>
                     @Html.LabelFor(model => model.SoundEngineer, htmlAttributes: new { @class = "control-label" })
                     <div class="dropdown btn-group float-right">
-                        <input type="text" class="btn btn-info btn-sm" placeholder="@EPosition.SoundEngineer.ToString()" value="@Model.SoundEngineer.ToString()" />
-                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="sr-only">Toggle Dropdown</span>
+                        @Html.EditorFor(model => model.SoundEngineer, new
+            {
+                htmlAttributes = new
+                {
+                    @class = "form-control form-control-sm btn btn-info btn-sm",
+                    placeholder = @EPosition.SoundEngineer.ToString(),
+                    data_EmployeeId = ""
+                }
+            })
+                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle dropdown-toggle-split"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only"> </span>
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
                             @{
@@ -178,14 +280,14 @@
                                 {
                                     if (item.Position == EPosition.SoundEngineer.ToString())
                                     {
-                                        <label class="dropdown-item" href="#">@item.Name</label>
+                                        <label class="dropdown-item" data-personId="@item.Id.ToString()">@item.Name</label>
+                                        }
                                     }
                                 }
-                            }
-
                         </div>
                     </div>
                 </div>
+                @Html.ValidationMessageFor(model => model.SoundEngineer, "", new { @class = "text-danger" })
 
                 <div>
                     @Html.CheckBoxFor(model => model.Orchestra, new { @class = "form-check-label" })
@@ -208,29 +310,88 @@
             </div>
         </div>
     </div>
-
 }
 
 
 @section scripts {
     <script type="text/javascript">
-        $('.dropdown').on('show.bs.dropdown', function (e) {
-            var value = this.querySelector('input.btn');
-            var menu = this.querySelector('.dropdown-menu');
-            var items = menu.querySelectorAll('.dropdown-item');
+        "use strict";
+        window.onload = function () {
+            dropdownMenuEvent();
+            togglesEvent();
+            inputTimeEvent();
+            //console.log('================================================================');
+            inputMenuEvent();
+            init();
+        }
 
-            for (var i = 0; i < items.length; ++i)
-            {
-                console.log(items[i]);
-                items[i].addEventListener('click', function (event) { //e.children
-                console.log(event);
-                value.value = this.innerText;
+        var init = function () {
+            // Acces
+            document.querySelector('#Access').value = "Private";
+
+            // Time
+            let time = document.querySelector('input.btn.btn-info.control-label');
+            let result = document.querySelector('#Duration').value;
+            let hour = Math.floor(result / 60);
+            let mitutes = result % 60;
+            time.value = ((hour < 10) ? '0' + hour : hour) + ':' + ((mitutes < 10) ? '0' + mitutes : mitutes);
+        }
+
+        var dropdownMenuEvent = function () {
+            let dropdowns = document.querySelectorAll('.dropdown');
+            dropdowns.forEach(function (item) {
+                let val = item.querySelector('input.form-control');
+                let items = item.querySelector('.dropdown-menu').querySelectorAll('.dropdown-item');
+
+                items.forEach(function (menusItem) {
+                    item.addEventListener('click', function (e) {
+                        val.value = e.srcElement.textContent;
+                        if (!isNaN(e.srcElement.dataset.personid)) {
+                            val.dataset.employeeid = e.srcElement.dataset.personid;
+                        }
+                    });
                 });
-            }
+            });
+        };
 
-            // do something…
-        })
+        var inputMenuEvent = function () {
+            let vals = document.querySelectorAll('div.dropdown input.form-control-sm');
+            vals.forEach(function (val) {
+                val.addEventListener('change', function (e) {
+                    let check = false;
+                    @*var empl = @Html.Raw(Json.Encode(ViewBag.Employee));
+                    for (let item in '@ViewBag.Employee') {
+                        console.log(item);
+                        if (e.srcElement.value == item.Name) check = true;
+                        else check = false;
+                    }*@
+                    if (!check && !isNaN(e.srcElement.dataset.employeeid)) {
+                        e.srcElement.dataset.employeeid = "";
+                        console.log(e.srcElement.value);
+                    }
+                });
 
+            });
+        }
 
+        var togglesEvent = function () {
+            let toggles = document.querySelectorAll('div.btn-group-toggle label.btn-secondary');
+            toggles.forEach(function (item) {
+                item.addEventListener('click', function (e) {
+                    document.querySelector('#Access').value = e.srcElement.textContent.replace(/\s+/g, '');
+                });
+            });
+        };
+
+        var inputTimeEvent = function () {
+            let time = document.querySelector('input.btn.btn-info.control-label');
+            time.addEventListener('change', function (e) {
+                var parts = e.srcElement.value.split(':');
+                let result = Number(parts[0]) * 60 + Number(parts[1]);
+                document.querySelector('#Duration').value = result;
+                console.log('result = ' + result);
+                console.log(document.querySelector('#Duration').value);
+            });
+        }
     </script>
 }

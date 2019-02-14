@@ -1,9 +1,11 @@
 ﻿// System
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 // Project
 using Hnatob.Domain.Concrete;
+using Hnatob.Domain.Helper;
 
 namespace Hnatob.Domain.Abstract
 {
@@ -11,9 +13,11 @@ namespace Hnatob.Domain.Abstract
     {
         //EfDbContext context = new EfDbContext();
 
-        public abstract IEnumerable<Event> GetList();
+        public abstract IQueryable<Event> GetEvents();
 
         public abstract Event GetObject(int iventId);
+
+        public abstract IQueryable<EventsType> GetEventsTypes();
 
         public abstract void Update(Event model);
 

@@ -15,7 +15,8 @@ namespace Hnatob.Domain.Concrete
     {
         EfDbContext context = new EfDbContext();
 
-        public override IEnumerable<Person> GetPeople() => context.People;
+        public override IQueryable<Person> GetPeople() => context.People;
+        public override Person GetPerson(int Id) => context.People.FirstOrDefault(p => p.Id == Id);
 
         // TODO: public override IEvent[] GetObject(params int[] iventId)
         public Person GetObject(int iventId)
@@ -63,16 +64,15 @@ namespace Hnatob.Domain.Concrete
             {
                 context.People.Remove(dbEnry);
                 context.SaveChanges();
+                return dbEnry;
             }
-            return dbEnry;
+            else return null;
         }
 
         //===================================================================
 
-        public override IEnumerable<Position> GetPositions() => context.Positions;
+        public override IQueryable<Position> GetPositions() => context.Positions;
 
-        public override IEnumerable<Employee> GetEmployee() => context.PositionPersons;
-
-
+        //public override IEnumerable<Employee> GetEmployee() => context.PositionPersons;
     }
 }

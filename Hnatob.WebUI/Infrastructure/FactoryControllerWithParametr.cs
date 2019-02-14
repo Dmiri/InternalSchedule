@@ -19,8 +19,11 @@ namespace Hnatob.WebUI.App_Start
             {
                 case "Scheduler":
                     //targetType = typeof(SchedulerController);
-                    return new SchedulerController(new EfScheduleRepository());
-
+                    return new SchedulerController(new EfScheduleRepository(), new EfPeopleRepository());
+                case "Employees":
+                    return new EmployeesController(new EfPeopleRepository());
+                case "SetParams":
+                    return new SetParamsController(new EfScheduleRepository());
             }
             return base.CreateController(requestContext, controllerName);
         }

@@ -14,15 +14,16 @@ namespace Hnatob.Domain.Abstract
 {
     public abstract class IPeopleRepository : IDisposable
     {
-        public abstract IEnumerable<Person> GetPeople();
+        public abstract IQueryable<Person> GetPeople();
+        public abstract Person GetPerson(int Id);
         public abstract void Update(Person person);
         public abstract Person Delete(int personId);
 
         //===================================================================
 
-        public abstract IEnumerable<Position> GetPositions();
+        public abstract IQueryable<Position> GetPositions();
 
-        public abstract IEnumerable<Employee> GetEmployee();
+        //public abstract IEnumerable<Employee> GetEmployee();
 
 
 
