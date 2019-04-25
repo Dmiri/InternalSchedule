@@ -82,3 +82,10 @@ C:\Users\D\source\repos\C#\Hnatob\Hnatob.WebUI\bin\Hnatob.Domain.pdb
 C:\Users\D\source\repos\C#\Hnatob\Hnatob.WebUI\bin\Hnatob.Domain.dll.config
 C:\Users\D\source\repos\C#\Hnatob\Hnatob.WebUI\obj\Debug\Hnatob.WebUI.Migrations.ObjectConrete.resources
 C:\Users\D\source\repos\C#\Hnatob\Hnatob.WebUI\obj\Debug\Hnatob.WebUI.csproj.GenerateResource.Cache
+C:\Users\D\source\repos\C#\Hnatob\Hnatob.WebUI\obj\Debug\Hnatob.WebUI.Migrations.addTableResponsible.resources
+C:\Users\D\source\repos\C#\Hnatob\Hnatob.WebUI\bin\System.Net.Http.Formatting.dll
+C:\Users\D\source\repos\C#\Hnatob\Hnatob.WebUI\bin\System.Web.Http.dll
+C:\Users\D\source\repos\C#\Hnatob\Hnatob.WebUI\bin\System.Web.Http.WebHost.dll
+C:\Users\D\source\repos\C#\Hnatob\Hnatob.WebUI\bin\System.Net.Http.Formatting.xml
+C:\Users\D\source\repos\C#\Hnatob\Hnatob.WebUI\bin\System.Web.Http.xml
+C:\Users\D\source\repos\C#\Hnatob\Hnatob.WebUI\bin\System.Web.Http.WebHost.xml

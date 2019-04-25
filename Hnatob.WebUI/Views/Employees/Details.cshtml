@@ -63,6 +63,9 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    <div class="row">
+        <div class="col-md-offset-2 col-md-10">
+            @Html.ActionLink("Back to List", "Employees", null, new { @class = "btn btn-default btn-dark" })
+        </div>
+    </div>
 </p>

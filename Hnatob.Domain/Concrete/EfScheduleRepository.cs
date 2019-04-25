@@ -2,9 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
 
 // Project
 using Hnatob.Domain.Abstract;
@@ -12,70 +9,73 @@ using Hnatob.Domain.Helper;
 
 namespace Hnatob.Domain.Concrete
 {
-    public class EfScheduleRepository : ScheduleRepository
+    public class EfScheduleRepository : IScheduleRepository
     {
         EfDbContext context = new EfDbContext();
 
         public override IQueryable<Event> GetEvents() => context.Events;
-        // TODO: public override IEvent[] GetObject(params int[] iventId)
+
         public override Event GetObject(int iventId)
         {
             var dbEntry = context.Events.Find(iventId);//FirstOrDefault
             return dbEntry;
         }
 
-        public override IQueryable<EventsType> GetEventsTypes()
-        {
-            var dbEntry = context.EventsTypes;
-            return dbEntry;
-        }
 
         public override void Update(Event _event)
         {
 
             if (_event == null) return;
-
+            Event dbEntry;
             if (_event.Id == 0)
-            {
-                context.Events.Add(_event);
-            }
+                dbEntry = new Event();
 
+            else dbEntry = context.Events.FirstOrDefault(e => e.Id == _event.Id);
+            if (dbEntry != null)
+            {
+                // TODU: Use method for copy http://docs.automapper.org
+                dbEntry.Access = _event.Access;
+                dbEntry.Description = _event.Description;
+                dbEntry.Duration = _event.Duration;
+                dbEntry.Id = _event.Id;
+                dbEntry.Location = _event.Location;
+                dbEntry.EventType = _event.EventType;
+                dbEntry.Start = _event.Start;
+                dbEntry.Title = _event.Title;
+
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var responsibles = dbEntry.Responsibles.ToList();
+                        foreach (var item in responsibles)
+                        {
+                            context.Responsibles.Remove(item);
+                        }
+                        dbEntry.Responsibles.AddRange(_event.Responsibles);
+
+                        var service = dbEntry.CommentsToServices.ToList();
+                        foreach (var item in service)
+                        {
+                            context.CommentsToservices.Remove(item);
+                        }
+                        dbEntry.CommentsToServices.AddRange(_event.CommentsToServices);
+
+                        context.SaveChanges();
+                        transaction.Commit();
+                    }
+                    catch (Exception e)
+                    {
+                        transaction.Rollback();
+                        throw new Exception("Record failed: responsibles / services - " + e.Message);
+                    }
+                }
+            }
             else
             {
-                Event dbEntry = context.Events.Find(_event.Id);
-                if (dbEntry != null)
-                {
-                    // TODU: Use method for copy http://docs.automapper.org
-                    dbEntry.Access = _event.Access;
-                    dbEntry.Accompanist = _event.Accompanist;
-                    dbEntry.ActorsId = _event.ActorsId;
-                    dbEntry.Choir = _event.Choir;
-                    dbEntry.Choirmaster = _event.Choirmaster;
-                    dbEntry.Conductor = _event.Conductor;
-                    dbEntry.Description = _event.Description;
-                    dbEntry.Duration = _event.Duration;
-                    dbEntry.Id = _event.Id;
-                    dbEntry.LightingDesigner = _event.LightingDesigner;
-                    dbEntry.Location = _event.Location;
-                    dbEntry.Mimic = _event.Mimic;
-                    dbEntry.Orchestra = _event.Orchestra;
-                    dbEntry.EventType = _event.EventType;
-                    dbEntry.Producer = _event.Producer;
-                    dbEntry.SoundEngineer = _event.SoundEngineer;
-                    dbEntry.Start = _event.Start;
-                    dbEntry.Title = _event.Title;
-
-                    //dbEntry.Prefix = _event.Prefix;
-                    //dbEntry = _event;
-                    //Mapper.CreateMap<Event, Event>();
-                    //Mapper.Map<Event, Event>(_event, dbEntry);
-                }
-                else
-                {
-                    //throw new Exception("Record didn't found");
-                }
+                throw new Exception("Record failed: this object does not exist.");
             }
-            context.SaveChanges();
+
 
         }
 

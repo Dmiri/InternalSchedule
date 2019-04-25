@@ -1,0 +1,47 @@
+﻿@model List<Hnatob.Domain.Helper.Responsible>
+
+@for (var i = 0; i < Model.Count; ++i)
+{
+<div class="row p-2">
+    <input name="responsibleId" type="hidden" class="" value="@Model[i].Id" />
+    <div id="post">
+        <div class="dropdown btn-group float-right p-1">
+            @{
+                string post = @Model[i].Position?.Name ?? "Position";
+                string name = @Model[i].Person?.Name ?? @Model[i].PersonName;
+            }
+            <input name="hidenParamPost" type="hidden" class="" value="@Model[i].PositionId" />
+            <input name="ResponsiblePost" type="button" class="form-control btn btn-info"
+                   value="@post">
+            <button class="btn btn-info dropdown-toggle dropdown-toggle-split"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="sr-only"> </span>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right">
+                <label class="dropdown-item" data-itemid="0">Empty</label>
+                @foreach (var row in ViewBag.Positions)
+                {
+                    <label class="dropdown-item" data-itemid="@row.Id.ToString()">@row.Name</label>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div id="name">
+        <div class="dropdown btn-group float-right p-1">
+            <input name="hidenParamName" type="hidden" class="" value="@Model[i].PersonId" />
+            <input name="ResponsibleName" class="form-control" value="@name" />
+            <button class="btn btn-sm btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="sr-only"></span>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right">
+            </div>
+        </div>
+    </div>
+    <div class="form-group p-1">
+        <label @*for="comment"*@>Comment:</label>
+        <textarea id="comment" name="Comment" class="form-control w-auto" rows="2">@Model[i].Comment</textarea>
+    </div>
+    @*<input name="Comment" type="text" class=" p-1" value="@Model[i].Comment" />*@
+</div>
+}

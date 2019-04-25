@@ -15,14 +15,18 @@ namespace Hnatob.Domain.Helper
         public Position()
         {
             People = new List<Person>();
+            Responsibles = new List<Responsible>();
         }
 
         [Key, Column(Order = 0)]
         public int Id { get; set; }
-        //[Key, Column(Order = 1)]
+
+        [Index(IsUnique = true)]
+        [MaxLength(32)]
         [Required(ErrorMessage = "Please, enter position's name")]
         public string Name { get; set; }
 
         public virtual ICollection<Person> People { get; set; }
+        public virtual ICollection<Responsible> Responsibles { get; set; }
     }
 }

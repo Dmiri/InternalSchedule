@@ -103,12 +103,21 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.7\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -199,6 +208,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\api\EventsAsyncController.cs" />
+    <Compile Include="Controllers\api\EventsController.cs" />
     <Compile Include="Controllers\SetParamsController.cs" />
     <Compile Include="Infrastructure\FactoryControllerWithParametr.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -217,9 +229,12 @@
     <Compile Include="Migrations\201811120040326_ObjectConrete.Designer.cs">
       <DependentUpon>201811120040326_ObjectConrete.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201902142243544_addTableResponsible.cs" />
+    <Compile Include="Migrations\201902142243544_addTableResponsible.Designer.cs">
+      <DependentUpon>201902142243544_addTableResponsible.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\ChoiceEmployee.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Menu.cs" />
@@ -244,6 +259,7 @@
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\custom\edit-schedule.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />
@@ -335,7 +351,9 @@
     <Content Include="Views\Scheduler\Details.cshtml" />
     <Content Include="Views\Employees\Details.cshtml" />
     <Content Include="Views\SetParams\Setting.cshtml" />
-    <Content Include="Views\SetParams\Editor.cshtml" />
+    <Content Include="Views\Scheduler\GetResponsiblePerson.cshtml" />
+    <Content Include="Views\Scheduler\ResponsibleForEdit.cshtml" />
+    <Content Include="Views\Scheduler\CommentsToServicesForEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -359,6 +377,12 @@
     <EmbeddedResource Include="Migrations\201811120040326_ObjectConrete.resx">
       <DependentUpon>201811120040326_ObjectConrete.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902142243544_addTableResponsible.resx">
+      <DependentUpon>201902142243544_addTableResponsible.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -30,8 +30,9 @@ namespace Hnatob.Domain.Concrete
             {
                 return null;
             }
-        }
 
+        }
+        
         public override void Update(Person person)
         {
 

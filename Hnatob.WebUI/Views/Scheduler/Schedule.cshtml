@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Hnatob.Domain.Concrete.Event>
+﻿@model IEnumerable<Hnatob.Domain.Helper.Event>
 @{ViewBag.Title = "Schedele";}
 
 <table class="table">
@@ -70,3 +70,30 @@
 <p>
     @Html.ActionLink("Create New", "Edit", null, new { @class = "btn btn-primary" })
 </p>
+
+@section scripts{
+    <script type="text/javascript">
+        "use strict";
+        window.onload = function () {
+            confirmDelete();
+        }
+
+        var confirmDelete = function () {
+            // Acces
+            var listBtn = document.querySelectorAll('td.btn-group a.btn.btn-danger');
+
+            listBtn.forEach(function (item)
+            {
+                item.addEventListener('click', function ()
+                {
+                    debugger;
+                    let check = confirm('Are you shure you want to delete this object?');
+                    if (!check) {
+                        //item.preventDefault();
+                        return false;
+                    }
+                })
+            });
+        }
+    </script>
+}

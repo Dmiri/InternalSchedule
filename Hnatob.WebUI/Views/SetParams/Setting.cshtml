@@ -1,11 +1,78 @@
-﻿@{ViewBag.Title = "Setting";}
-@*@model IEnumerable<Hnatob.Domain.Helper.EventsType>*@
-@model List<string>
-@foreach (var item in Model)
+﻿@model List<Hnatob.Domain.Helper.Responsible>
+@{ViewBag.Title = "Setting";}
+
+<h5>Responsibles:</h5>
+@using (Html.BeginForm())
 {
-    <div class="row">
-        <input type="text" value="@item"/>
-        @*@Html.Editor(item)*@
-        @Html.ActionLink("Delete", "Delete", new { @*eventId = item.Id*@ }, new { @class = "btn btn-danger" })
+    <div class="col-md-offset-2 col-md-10">
+        @Html.ActionLink("Back to Schedule", "Schedule", "Scheduler", null, new { @class = "btn btn-default btn-dark" })
+        <input type="submit" value="Save" class="btn btn-default" />
     </div>
+}
+
+
+
+
+
+@section scripts {
+    <script type="text/javascript">
+        "use strict";
+        window.onload = function () {
+            dropdownInit();
+            dropdownMenuEvent();
+        }
+
+        function dropdownMenuEvent() {
+            let dropdowns = document.querySelectorAll('.dropdown');
+            dropdowns.forEach(function (item) {
+                let val = item.querySelector('input.form-control');
+                let display = item.querySelector('label.form-control');
+                let items = item.querySelector('.dropdown-menu').querySelectorAll('.dropdown-item');
+                items.forEach(function (menusItem) {
+                    menusItem.addEventListener('click', function (e) {
+                        display.textContent = e.srcElement.textContent;
+                        if (display.textContent != 'empty') {
+                            val.value = e.srcElement.dataset.itemid;
+                        }
+                        else {
+                            val.value = '0';
+                        }
+
+                        dropdownInit();
+                    });
+                });
+            });
+        };
+
+        function dropdownInit() {
+            let dropdowns = document.querySelectorAll('.dropdown');
+            //===============================================================
+            let hidList = [];
+            let i = 0;
+            dropdowns.forEach(function (hidItem) {
+                let fild = hidItem.querySelector('label.form-control').textContent;
+                if (fild != 'empty') {
+                    hidList[i] = hidItem.querySelector('label.form-control').textContent;
+                    i++;
+                }
+            });
+
+            //---------------------------------------------------------------
+            dropdowns.forEach(function (hidItem) {
+                let list = hidItem.querySelector('.dropdown-menu').querySelectorAll('.dropdown-item');
+                list.forEach(function (useItem) {
+                    for (let i = 0; hidList.length > i; ++i) {
+                        if (useItem.textContent == hidList[i]) {
+                            useItem.style.display = "none";
+                            break;
+                        }
+                        else {
+                            useItem.style.display = "block";
+                        }
+                    };
+                });
+            });
+        }
+
+    </script>
 }

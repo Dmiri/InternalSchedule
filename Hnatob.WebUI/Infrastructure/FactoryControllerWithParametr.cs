@@ -9,7 +9,7 @@ using Hnatob.Domain.Abstract;
 using Hnatob.Domain.Concrete;
 using Hnatob.WebUI.Controllers;
 
-namespace Hnatob.WebUI.App_Start
+namespace Hnatob.WebUI.Infrastructure
 {
     public class FactoryControllerWithParametr : DefaultControllerFactory
     {
@@ -19,11 +19,14 @@ namespace Hnatob.WebUI.App_Start
             {
                 case "Scheduler":
                     //targetType = typeof(SchedulerController);
-                    return new SchedulerController(new EfScheduleRepository(), new EfPeopleRepository());
+                    return new SchedulerController(
+                        new EfScheduleRepository(), 
+                        new EfPeopleRepository(),
+                        new EFResponsiblesRepository());
                 case "Employees":
                     return new EmployeesController(new EfPeopleRepository());
                 case "SetParams":
-                    return new SetParamsController(new EfScheduleRepository());
+                    return new SetParamsController(new EFResponsiblesRepository(), new EfPeopleRepository());
             }
             return base.CreateController(requestContext, controllerName);
         }

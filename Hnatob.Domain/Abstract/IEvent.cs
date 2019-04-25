@@ -20,15 +20,15 @@ namespace Hnatob.Domain.Abstract
         }
 
 
-        [HiddenInput,
-            Key,
-            DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [HiddenInput, Key]
         public int Id { get; set; }
 
-        //[HiddenInput]
-        [Display(Name = "Access")]
-        [Required(ErrorMessage = "Please, enter access")]
+        [Display(Name = "Access"), Required(ErrorMessage = "Please, enter access")]
         public string Access { get; set; }
+
+        [Display(Name = "Type")]
+        //[RegularExpression(@"^[[]{}#^$.,'|\/\\?*@+()]", ErrorMessage = "Поле не может содержать цифры и символов []{}#^$.,'\"|/\\?*@+()]")]
+        public string EventType { get; set; }
 
         [Display(Name = "Title"), Required(ErrorMessage = "Please, enter Title")]
         public string Title { get; set; }
@@ -37,7 +37,6 @@ namespace Hnatob.Domain.Abstract
         public string Location { get; set; }
 
         [Display(Name = "Start"), Required(ErrorMessage = "Please, enter the start time")]
-        //[Range(DateTime.Now, DateTime.MaxValue, ErrorMessage = "Please, enter the start time")]
         public DateTime Start { get; set; }
 
         [Display(Name = "Duration")]
