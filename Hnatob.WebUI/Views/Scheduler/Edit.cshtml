@@ -108,8 +108,8 @@
         @*---------------------------------------------------------------------------------------------------------------------*@
 
         <div class="col-md-5">
-            @Html.Label("Responsibles:")
-            <div id="responsibles">
+            <div id="responsiblesc">
+                @Html.Label("Responsibles:")
                 <div id="list">
                     @Html.Partial("ResponsibleForEdit", Model.Responsibles)
                 </div>
@@ -123,9 +123,9 @@
                             </button>
                             <div class="dropdown-menu dropdown-menu-right">
                                 @foreach (var item in ViewBag.Positions)
-                        {
-                            <label class="dropdown-item" data-itemid="@item.Id.ToString()">@item.Name</label>
-                }
+                    {
+                        <label class="dropdown-item" data-itemid="@item.Id.ToString()">@item.Name</label>
+        }
                             </div>
                         </div>
                     </div>
@@ -135,8 +135,8 @@
 
 
 
-            @Html.Label("Services:")
             <div id="services">
+                @Html.Label("Services:")
                 <div id="list">
                     @Html.Partial("CommentsToServicesForEdit", Model.CommentsToServices)
                 </div>
@@ -150,9 +150,9 @@
                             </button>
                             <div class="dropdown-menu dropdown-menu-right">
                                 @foreach (var item in ViewBag.Services)
-                                {
-                                <label class="dropdown-item" data-itemid="@item">@item</label>
-                                }
+                    {
+                        <label class="dropdown-item" data-itemid="@item">@item</label>
+        }
                             </div>
                         </div>
                     </div>

@@ -132,11 +132,6 @@ namespace Hnatob.WebUI.Controllers
 
             int id;
             int.TryParse(Request.Form.GetValues("Id").FirstOrDefault(), out id);
-            //var access = Request.Form.GetValues("Access").FirstOrDefault();
-            //var location = Request.Form.GetValues("Location").FirstOrDefault();
-            //var eventType = Request.Form.GetValues("EventType").FirstOrDefault();
-            //var title = Request.Form.GetValues("Title").FirstOrDefault();
-            //var description = Request.Form.GetValues("Description").FirstOrDefault();
 
             var datTimeMass = Request.Form.GetValues("Start").FirstOrDefault().Split(' ');
             var data = datTimeMass[0].Split('.');
@@ -206,6 +201,9 @@ namespace Hnatob.WebUI.Controllers
                 dbEntry.Responsibles.Add(responsible);
             }
 
+
+
+            // Get CommentToService
             var serviceNames = Request.Form.GetValues("serviceName");
             var serviceComments = Request.Form.GetValues("serviceComment");
 
@@ -218,6 +216,9 @@ namespace Hnatob.WebUI.Controllers
 
                 if (!string.IsNullOrEmpty(serviceComments[i]) || !string.IsNullOrWhiteSpace(serviceComments[i]))
                     commentToService.Comment = serviceComments[i];
+
+                commentToService.EventId = dbEntry.Id;
+                
                 dbEntry.CommentsToServices.Add(commentToService);
             }
 
