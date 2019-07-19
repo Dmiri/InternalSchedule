@@ -30,8 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=8.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.8.0.0\lib\net461\AutoMapper.dll</HintPath>
+    <Reference Include="AutoMapper, Version=8.1.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.8.1.0\lib\net461\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
@@ -39,8 +39,17 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.2\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.2\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -74,254 +83,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abstract\IResponsiblesRepository.cs" />
-    <Compile Include="Abstract\IServicesRepository.cs" />
-    <Compile Include="Helper\CommentToService.cs" />
-    <Compile Include="Concrete\EFResponsiblesRepository.cs" />
-    <Compile Include="Concrete\EFServicesRepository.cs" />
-    <Compile Include="Helper\Service.cs" />
-    <Compile Include="Helper\Employee.cs" />
+    <Compile Include="Models\CommentToService.cs" />
+    <Compile Include="Models\Service.cs" />
     <Compile Include="Abstract\IEvent.cs" />
-    <Compile Include="Abstract\IPeopleRepository.cs" />
     <Compile Include="Abstract\IPerson.cs" />
-    <Compile Include="Abstract\IScheduleRepository.cs" />
-    <Compile Include="Concrete\EfDbContext.cs" />
-    <Compile Include="Concrete\EfPeopleRepository.cs" />
-    <Compile Include="Concrete\EfScheduleRepository.cs" />
     <Compile Include="Helper\Access.cs" />
-    <Compile Include="Helper\Responsible.cs" />
-    <Compile Include="Migrations\201901251404171_InitDb.cs" />
-    <Compile Include="Migrations\201901251404171_InitDb.Designer.cs">
-      <DependentUpon>201901251404171_InitDb.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201901260045564_Create MtoM.cs" />
-    <Compile Include="Migrations\201901260045564_Create MtoM.Designer.cs">
-      <DependentUpon>201901260045564_Create MtoM.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201901262351099_edit MtoM.cs" />
-    <Compile Include="Migrations\201901262351099_edit MtoM.Designer.cs">
-      <DependentUpon>201901262351099_edit MtoM.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201901270101146_edit MtoM2.cs" />
-    <Compile Include="Migrations\201901270101146_edit MtoM2.Designer.cs">
-      <DependentUpon>201901270101146_edit MtoM2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201901292309511_editPageEdit.cs" />
-    <Compile Include="Migrations\201901292309511_editPageEdit.Designer.cs">
-      <DependentUpon>201901292309511_editPageEdit.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201901292314201_editPageEdit2.cs" />
-    <Compile Include="Migrations\201901292314201_editPageEdit2.Designer.cs">
-      <DependentUpon>201901292314201_editPageEdit2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201901292355417_editPageEdit3.cs" />
-    <Compile Include="Migrations\201901292355417_editPageEdit3.Designer.cs">
-      <DependentUpon>201901292355417_editPageEdit3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201902021250437_editPageEdit4.cs" />
-    <Compile Include="Migrations\201902021250437_editPageEdit4.Designer.cs">
-      <DependentUpon>201902021250437_editPageEdit4.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201902082350036_durationToInt.cs" />
-    <Compile Include="Migrations\201902082350036_durationToInt.Designer.cs">
-      <DependentUpon>201902082350036_durationToInt.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201902090024106_durationToInt2.cs" />
-    <Compile Include="Migrations\201902090024106_durationToInt2.Designer.cs">
-      <DependentUpon>201902090024106_durationToInt2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201902112301493_testLazyLoading.cs" />
-    <Compile Include="Migrations\201902112301493_testLazyLoading.Designer.cs">
-      <DependentUpon>201902112301493_testLazyLoading.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201902112311281_testLazyLoading2.cs" />
-    <Compile Include="Migrations\201902112311281_testLazyLoading2.Designer.cs">
-      <DependentUpon>201902112311281_testLazyLoading2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Helper\Position.cs" />
-    <Compile Include="Migrations\201902121811500_addEventsType.cs" />
-    <Compile Include="Migrations\201902121811500_addEventsType.Designer.cs">
-      <DependentUpon>201902121811500_addEventsType.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201902131159505_withoutPP.cs" />
-    <Compile Include="Migrations\201902131159505_withoutPP.Designer.cs">
-      <DependentUpon>201902131159505_withoutPP.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201902132139200_reternMtoM.cs" />
-    <Compile Include="Migrations\201902132139200_reternMtoM.Designer.cs">
-      <DependentUpon>201902132139200_reternMtoM.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201902151417094_staf.cs" />
-    <Compile Include="Migrations\201902151417094_staf.Designer.cs">
-      <DependentUpon>201902151417094_staf.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201902172256509_maybeFinal.cs" />
-    <Compile Include="Migrations\201902172256509_maybeFinal.Designer.cs">
-      <DependentUpon>201902172256509_maybeFinal.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201902172300207_maybeFinal_2.cs" />
-    <Compile Include="Migrations\201902172300207_maybeFinal_2.Designer.cs">
-      <DependentUpon>201902172300207_maybeFinal_2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201902270120192_ResponsibleNotNullable.cs" />
-    <Compile Include="Migrations\201902270120192_ResponsibleNotNullable.Designer.cs">
-      <DependentUpon>201902270120192_ResponsibleNotNullable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201902270220496_ResponsibleOneToOne.cs" />
-    <Compile Include="Migrations\201902270220496_ResponsibleOneToOne.Designer.cs">
-      <DependentUpon>201902270220496_ResponsibleOneToOne.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201902282118473_newLogicResponsible.cs" />
-    <Compile Include="Migrations\201902282118473_newLogicResponsible.Designer.cs">
-      <DependentUpon>201902282118473_newLogicResponsible.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201902282209507_newLogicResponsibleNew.cs" />
-    <Compile Include="Migrations\201902282209507_newLogicResponsibleNew.Designer.cs">
-      <DependentUpon>201902282209507_newLogicResponsibleNew.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201902282218008_newLogicResponsibleBetwin.cs" />
-    <Compile Include="Migrations\201902282218008_newLogicResponsibleBetwin.Designer.cs">
-      <DependentUpon>201902282218008_newLogicResponsibleBetwin.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201902282236050_newLogicResponsibleBetwin2.cs" />
-    <Compile Include="Migrations\201902282236050_newLogicResponsibleBetwin2.Designer.cs">
-      <DependentUpon>201902282236050_newLogicResponsibleBetwin2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201902282313324_newLogicResponsibleBetwin3.cs" />
-    <Compile Include="Migrations\201902282313324_newLogicResponsibleBetwin3.Designer.cs">
-      <DependentUpon>201902282313324_newLogicResponsibleBetwin3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201902282320046_newLogicResponsibleBetwin4.cs" />
-    <Compile Include="Migrations\201902282320046_newLogicResponsibleBetwin4.Designer.cs">
-      <DependentUpon>201902282320046_newLogicResponsibleBetwin4.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201902282353510_newLogicResponsibleBetwin5.cs" />
-    <Compile Include="Migrations\201902282353510_newLogicResponsibleBetwin5.Designer.cs">
-      <DependentUpon>201902282353510_newLogicResponsibleBetwin5.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201903010032078_newLogicResponsibleBetwin6.cs" />
-    <Compile Include="Migrations\201903010032078_newLogicResponsibleBetwin6.Designer.cs">
-      <DependentUpon>201903010032078_newLogicResponsibleBetwin6.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201903012324437_newLogicResponsibleBetween7.cs" />
-    <Compile Include="Migrations\201903012324437_newLogicResponsibleBetween7.Designer.cs">
-      <DependentUpon>201903012324437_newLogicResponsibleBetween7.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201903012331192_newLogicResponsibleBetween8.cs" />
-    <Compile Include="Migrations\201903012331192_newLogicResponsibleBetween8.Designer.cs">
-      <DependentUpon>201903012331192_newLogicResponsibleBetween8.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201903040051092_newLogicResponsibleBetween9.cs" />
-    <Compile Include="Migrations\201903040051092_newLogicResponsibleBetween9.Designer.cs">
-      <DependentUpon>201903040051092_newLogicResponsibleBetween9.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Helper\Event.cs" />
-    <Compile Include="Helper\Person.cs" />
-    <Compile Include="Params\Access.cs" />
+    <Compile Include="Models\Responsible.cs" />
+    <Compile Include="Models\Position.cs" />
+    <Compile Include="Models\Event.cs" />
+    <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201901251404171_InitDb.resx">
-      <DependentUpon>201901251404171_InitDb.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201901260045564_Create MtoM.resx">
-      <DependentUpon>201901260045564_Create MtoM.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201901262351099_edit MtoM.resx">
-      <DependentUpon>201901262351099_edit MtoM.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201901270101146_edit MtoM2.resx">
-      <DependentUpon>201901270101146_edit MtoM2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201901292309511_editPageEdit.resx">
-      <DependentUpon>201901292309511_editPageEdit.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201901292314201_editPageEdit2.resx">
-      <DependentUpon>201901292314201_editPageEdit2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201901292355417_editPageEdit3.resx">
-      <DependentUpon>201901292355417_editPageEdit3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902021250437_editPageEdit4.resx">
-      <DependentUpon>201902021250437_editPageEdit4.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902082350036_durationToInt.resx">
-      <DependentUpon>201902082350036_durationToInt.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902090024106_durationToInt2.resx">
-      <DependentUpon>201902090024106_durationToInt2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902112301493_testLazyLoading.resx">
-      <DependentUpon>201902112301493_testLazyLoading.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902112311281_testLazyLoading2.resx">
-      <DependentUpon>201902112311281_testLazyLoading2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902121811500_addEventsType.resx">
-      <DependentUpon>201902121811500_addEventsType.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902131159505_withoutPP.resx">
-      <DependentUpon>201902131159505_withoutPP.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902132139200_reternMtoM.resx">
-      <DependentUpon>201902132139200_reternMtoM.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902151417094_staf.resx">
-      <DependentUpon>201902151417094_staf.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902172256509_maybeFinal.resx">
-      <DependentUpon>201902172256509_maybeFinal.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902172300207_maybeFinal_2.resx">
-      <DependentUpon>201902172300207_maybeFinal_2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902270120192_ResponsibleNotNullable.resx">
-      <DependentUpon>201902270120192_ResponsibleNotNullable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902270220496_ResponsibleOneToOne.resx">
-      <DependentUpon>201902270220496_ResponsibleOneToOne.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902282118473_newLogicResponsible.resx">
-      <DependentUpon>201902282118473_newLogicResponsible.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902282209507_newLogicResponsibleNew.resx">
-      <DependentUpon>201902282209507_newLogicResponsibleNew.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902282218008_newLogicResponsibleBetwin.resx">
-      <DependentUpon>201902282218008_newLogicResponsibleBetwin.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902282236050_newLogicResponsibleBetwin2.resx">
-      <DependentUpon>201902282236050_newLogicResponsibleBetwin2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902282313324_newLogicResponsibleBetwin3.resx">
-      <DependentUpon>201902282313324_newLogicResponsibleBetwin3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902282320046_newLogicResponsibleBetwin4.resx">
-      <DependentUpon>201902282320046_newLogicResponsibleBetwin4.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201902282353510_newLogicResponsibleBetwin5.resx">
-      <DependentUpon>201902282353510_newLogicResponsibleBetwin5.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201903010032078_newLogicResponsibleBetwin6.resx">
-      <DependentUpon>201903010032078_newLogicResponsibleBetwin6.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201903012324437_newLogicResponsibleBetween7.resx">
-      <DependentUpon>201903012324437_newLogicResponsibleBetween7.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201903012331192_newLogicResponsibleBetween8.resx">
-      <DependentUpon>201903012331192_newLogicResponsibleBetween8.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201903040051092_newLogicResponsibleBetween9.resx">
-      <DependentUpon>201903040051092_newLogicResponsibleBetween9.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

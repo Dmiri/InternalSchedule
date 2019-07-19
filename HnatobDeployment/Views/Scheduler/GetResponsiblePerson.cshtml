@@ -1,0 +1,4 @@
+﻿@model IEnumerable<Hnatob.WebUI.Models.ModelForEvent>
+@using Hnatob.WebUI.Models
+@foreach (ModelForEvent item in Model)
+{<label class="dropdown-item" data-itemid=@item.Id.ToString()>@item.Name</label>}

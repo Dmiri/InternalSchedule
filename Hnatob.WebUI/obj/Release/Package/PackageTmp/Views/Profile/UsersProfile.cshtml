@@ -1,0 +1,77 @@
+﻿@model Hnatob.WebUI.Models.ProfileViewModels
+
+@using (Html.BeginForm("UsersProfile", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    string myWidth1colum = " col-12 col-md-3 col-lg-3 text-md-right";
+    string myWidth2colum = " col-12 col-md-6 col-lg-5";
+    <div class="py-2">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Security</h5>
+                <div class="form-group row">
+                    <label class="@myWidth1colum">Email:</label>
+                    <input type="text" class="form-control @myWidth2colum" value="@Model.Email" readonly />
+                </div>
+                <div class="form-group row">
+                    <label class="@myWidth1colum">Phone number: </label>
+                    @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" + myWidth2colum, placeholder = "+380xxxxxxxxxx" } })
+                </div>
+                <div>
+                    @Html.ActionLink("Change password", "ChangePassword", "Manage", null, new { @class = "btn btn-default btn-primary" })
+                </div>
+            </div>
+        </div>
+        @if (Model.EmailConfirmed)
+        {
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">User data / Profile</h5>
+                    <div class="form-group row">
+                        <label class="@myWidth1colum">Name: </label>
+                        @Html.EditorFor(model => model.Name, new
+                        {
+                            htmlAttributes = new { @class = "form-control " + myWidth2colum, placeholder = "Name" }
+                        })
+                    </div>
+                    <div class="form-group row">
+                        <label class="@myWidth1colum">Patronymic: </label>
+                        @Html.EditorFor(model => model.Patronymic, new { htmlAttributes = new { @class = "form-control" + myWidth2colum, placeholder = "Patronymic" } })
+                    </div>
+                    <div class="form-group row">
+                        <label class="@myWidth1colum">Surname: </label>
+                        @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control" + myWidth2colum, placeholder = "Surname" } })
+                    </div>
+                    <div class="form-group">
+                        <input name="Birthday" type="hidden" class="form-control" value="@Model.Birthday" />
+                    </div>
+                    <div class="form-group row">
+                        <label class="@myWidth1colum">Birthday</label>
+                        <input id="birthday" class="datepicker form-control @myWidth2colum" placeholder="dd.mm.yyyy">
+                    </div>
+                    <div class="form-group row">
+                        <label class="@myWidth1colum">Nickname: </label>
+                        @Html.EditorFor(model => model.Nickname, new { htmlAttributes = new { @class = "form-control" + myWidth2colum, placeholder = "Nickname" } })
+                    </div>
+
+                    <div class="form-group row">
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                        <label class="@myWidth1colum">Introduction:</label>
+                        <textarea name="introduction" class="form-control  @myWidth2colum" rows="3">@Model.Introduction</textarea>
+                    </div>
+                    <div class="form-group row">
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                        <label class="@myWidth1colum">Description:</label>
+                        <textarea name="description" class="form-control @myWidth2colum" rows="5">@Model.Description</textarea>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="form-group pt-2">
+            <div class="col-md-offset-2 col-md-10">
+                @Html.ActionLink("Back to Home", "", "", null, new { @class = "btn btn-default btn-dark" })
+                <input id="submit" type="submit" value="Save" class="btn btn-default btn-success" />
+            </div>
+        </div>
+    </div>
+}

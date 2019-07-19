@@ -8,7 +8,6 @@ using System.Web.Mvc;
 // Embed
 
 // Project
-using Hnatob.Domain.Concrete;
 
 namespace Hnatob.Domain.Abstract
 {
