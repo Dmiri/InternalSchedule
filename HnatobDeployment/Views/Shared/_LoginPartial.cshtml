@@ -6,10 +6,14 @@
     @Html.AntiForgeryToken()
 
 <ul class="nav navbar-nav navbar-right">
-    <li>@Html.ActionLink("Profile", "UsersProfile", "Profile", null, htmlAttributes: new { @class = "btn btn-dark", title = "Profile" })</li>
-    <li>
+    <li>@Html.ActionLink("Profile", "UsersProfile", "Profile", null,
+       htmlAttributes: new {
+           @class = "btn btn-dark",
+           style = "margin:0px 3px 3px 0px",
+           title = "Profile" })</li>
+    @*<li>
         @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { @class = "btn btn-dark", title = "Manage" })
-    </li>
+    </li>*@
     <li><a href="javascript:document.getElementById('logoutForm').submit()" class="btn btn-dark">Log out</a></li>
 </ul>
     }
@@ -17,7 +21,15 @@
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "btn btn-dark" })</li>
-        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink",  @class = "btn btn-dark" })</li>
+        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null,
+           htmlAttributes: new {
+               id = "registerLink",
+               @class = "btn btn-dark",
+               style = "margin:0px 3px 3px 0px" })</li>
+        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null,
+           htmlAttributes: new {
+               id = "loginLink",
+               @class = "btn btn-dark",
+               style = "margin:0px 3px 3px 0px" })</li>
     </ul>
 }

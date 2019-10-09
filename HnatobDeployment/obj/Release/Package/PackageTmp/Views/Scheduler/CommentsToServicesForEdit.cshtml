@@ -1,0 +1,30 @@
+﻿@model List<Hnatob.Domain.Models.CommentToService>
+
+@for (var i = 0; i < Model.Count; ++i)
+{
+    <div class="card">
+        <div class="card-body row">
+            @*<div class="form-groupp-2">*@
+            <div id="service" class=" col-12 col-lg-5">
+                <div class="dropdown btn-group p-1">
+                    <input name="serviceName" class="form-control btn btn-info"
+                           value="@Model[i].ServiceName">
+                    <button class="btn btn-info dropdown-toggle dropdown-toggle-split"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="sr-only"> </span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <label class="dropdown-item" data-itemid="0">Empty</label>
+                        @foreach (var row in ViewBag.Services)
+                        {
+                            <label class="dropdown-item" data-itemid="@row">@row</label>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-7">
+                <textarea name="serviceComment" class="form-control col-auto" rows="1">@Model[i].Comment</textarea>
+            </div>
+        </div>
+    </div>
+}

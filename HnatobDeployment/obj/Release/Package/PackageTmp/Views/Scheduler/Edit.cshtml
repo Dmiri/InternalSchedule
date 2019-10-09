@@ -1,0 +1,200 @@
+﻿@model Hnatob.Domain.Models.Event
+@using Hnatob.Domain.Helper
+
+@{
+    ViewBag.Title = "Edit";
+    string columnName = " col-12 col-sm-3";
+    string columnData = " col-auto";
+}
+
+
+@using (Html.BeginForm("Edit", "Scheduler",
+    FormMethod.Post,
+    new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <h4>Event</h4>
+        <hr />
+        <div class="form-row">
+            <div class="col-md-7 col-lg-5">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.Id)
+
+                @Html.HiddenFor(model => model.Access, new { value = Model.Access })
+                <div class="btn-group btn-group-toggle btn-sm" data-toggle="buttons">
+                    <label class="btn btn-secondary active">
+                        <input class=" btn btn-sm" type="radio" name=@Access.Private autocomplete="off">@Access.Private
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input class=" btn btn-sm" type="radio" name=@Access.Public autocomplete="off">@Access.Public
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EventType, htmlAttributes: new { @class = "control-label" + @columnName })
+                    @Html.ValidationMessageFor(model => model.EventType, "", new { @class = "text-danger" })
+                    <div class="dropdown btn-group">
+                        @Html.EditorFor(model => model.EventType, new { htmlAttributes = new { @class = "form-control" + @columnData, placeholder = "Event's type" } })
+                        <button type="button" class="btn btn-info btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only"> </span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            @foreach (var item in ViewBag.TypeEvent)
+                            {
+                                if (item != "")
+                                {
+                                    <label class="dropdown-item">@item</label>
+                                }
+                            }
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label" + @columnName })
+                    @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                    <div class="dropdown btn-group">
+                        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" + @columnData, placeholder = "Title for event" } })
+                        <button type="button" class="btn btn-info btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only"> </span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            @foreach (var item in ViewBag.TitleEvent)
+                            {
+                                <label class="dropdown-item">@item</label>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Location, htmlAttributes: new { @class = "control-label" + @columnName })
+                    @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
+                    <div class="dropdown btn-group">
+                        @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control" + @columnData, placeholder = "Event's location" } })
+                        <button type="button" class="btn btn-info btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only"> </span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            @foreach (var item in ViewBag.Location)
+                            {
+                                <label class="dropdown-item">@item</label>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <input name="Start" type="hidden" class="form-control" value="@Model.Start" />
+                    <div class="form-group">
+                        <label class="@columnName">Day</label>
+                        <input id="day" class="datepicker control-label @columnData" placeholder="dd.mm.yyyy">
+                    </div>
+                    <div class="form-group">
+                        <label class="@columnName" >Time</label>
+                        <input id="time" type="time" class="btn btn-info control-label  col-auto col-sm-4" />
+                    </div>
+                    @*@Html.LabelFor(model => model.Start, htmlAttributes: new { @class = "control-label" })*@
+                    @Html.ValidationMessageFor(model => model.Start, "", new { @class = "text-danger" })
+                    @*@Html.EditorFor(model => model.Start, new { htmlAttributes = new { @class = "form-control" } })*@
+                </div>
+
+                <div class="form-group">
+                    @Html.HiddenFor(model => model.Duration, htmlAttributes: new { @class = "control-label" })
+                    @Html.LabelFor(model => model.Duration, htmlAttributes: new { @class = "control-label" + @columnName })
+                    <input id="duration" type="time" class="btn btn-info control-label  col-auto col-sm-4" />
+                    @*<span class="validity"></span>*@
+                    @Html.ValidationMessageFor(model => model.Duration, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @*@Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })*@
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    <label class="@columnName">Description:</label>
+                    <textarea name="Description" class="form-control col-auto" rows="3">@Model.Description</textarea>
+                    @*@Html.TextAreaFor(model => model.Description, 3, 40, new { htmlAttributes = new { @class = "form-control" } })*@
+                </div>
+            </div>
+            @*---------------------------------------------------------------------------------------------------------------------*@
+
+            <div class="col-md-5 col-lg-7">
+                <div id="responsibles">
+                    <h5>Responsibles:</h5>
+                    <div id="list">
+                        <div id="sortable">
+                            @Html.Partial("ResponsibleForEdit", Model.Responsibles)
+                        </div>
+                    </div>
+                    <div class="float-right p-3">
+                        <div class="row">
+                            <div id="addrowresp" class="btn-group float-right">
+                                <button class="form-control btn btn-sm btn-info">Add responsible</button>
+                                <button class="btn btn-info dropdown-toggle dropdown-toggle-split"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="sr-only"> </span>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    @foreach (var item in ViewBag.Positions)
+                                    {
+                                        <label class="dropdown-item" data-itemid="@item.Id.ToString()">@item.Name</label>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="services" class="pt-5">
+                    <h5>Services:</h5>
+                    <div id="list">
+                        @Html.Partial("CommentsToServicesForEdit", Model.CommentsToServices)
+                    </div>
+                    <div class="float-right p-3">
+                        <div class="row">
+                            <div id="addrowservice" class="btn-group float-right">
+                                <button class="form-control btn btn-sm btn-info">Add service</button>
+                                <button class="btn btn-info dropdown-toggle dropdown-toggle-split"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="sr-only"> </span>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    @foreach (var item in ViewBag.Services)
+                                    {
+                                        <label class="dropdown-item" data-itemid="@item">@item</label>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                @Html.ActionLink("Back to List", "Schedule", null, new { @class = "btn btn-default btn-dark" })
+                <input id="submit" type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @*Juquery ui*@
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link href="~/Content/bootstrap-datepicker.css" rel="stylesheet" type="text/css">
+
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script src="~/Scripts/bootstrap-datepicker.js"></script>
+
+    @Scripts.Render("~/bundles/moment")
+
+    <script src="@Url.Content("~/Scripts/custom/edit-schedule.js")" type="text/javascript"></script>
+
+}

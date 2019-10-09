@@ -1,0 +1,20 @@
+﻿<header class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    @Html.ActionLink("KhNATOB", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+            <li>@Html.ActionLink("Schedule", "Schedule", "Scheduler", null, new { @class = "btn btn-dark", style = "margin:0px 3px 3px 0px" })</li>
+            <li> @Html.ActionLink("People", "Users", "Employees", null,
+                new {
+                    @class = "btn btn-dark",
+                    style = "display:none; margin:0px 3px 3px 0px",
+                    data_access = "manager",
+                }) </li>
+            <li>@Html.ActionLink("Contact", "Contact", "Home", null, new { @class = "btn btn-dark", style = "margin:0px 3px 3px 0px" })</li>
+            <li>@Html.ActionLink("About", "About", "Home", null, new { @class = "btn btn-dark", style = "margin:0px 3px 3px 0px" })</li>
+        </ul>
+        @Html.Partial("_LoginPartial")
+    </div>
+</header>

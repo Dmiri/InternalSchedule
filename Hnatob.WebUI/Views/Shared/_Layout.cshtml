@@ -6,25 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KhNATOB - @ViewBag.Title</title>
     @Styles.Render("~/Content/css")
-
-
 </head>
 <body>
-    <header class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-        @Html.ActionLink("KhNATOB", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Schedule", "Schedule", "Scheduler", null, new { @class = "btn btn-dark" })</li>
-                <li>@Html.ActionLink("People", "Users", "Employees", null, new { @class = "btn btn-dark" })</li>
-                <li>@Html.ActionLink("Contact", "Contact", "Home", null, new { @class = "btn btn-dark" })</li>
-                <li>@Html.ActionLink("About", "About", "Home", null, new { @class = "btn btn-dark" })</li>
-            </ul>
-            @Html.Partial("_LoginPartial")
-        </div>
-    </header>
+    @Html.Action("Navbar", "Manage")
     <div class="position-absolute container-fluid" style="z-index: 1050">
         @if (@TempData["Error"] != null)
         {
@@ -58,9 +42,44 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/bootstrap")
-
-
     @RenderSection("scripts", required: false)
+
+    <script type="text/javascript">
+        $(document).ready(function myfunction() {
+            init();
+        });
+
+        function init() {
+            $('[data-access=employee]').each(
+                function () {
+                    if ('@TempData["role"]'[1] == '1' ||
+                        '@TempData["role"]'[2] == '1' ||
+                        '@TempData["role"]'[3] == '1') {
+                        $(this).show();
+                    }
+                }
+            );
+
+            $('[data-access=editor]').each(
+                function () {
+                    if ('@TempData["role"]'[2] == '1') {
+                        $(this).show();
+                    }
+                }
+            );
+
+            $('[data-access=manager]').each(
+                function () {
+                    if ('@TempData["role"]'[3] == '1') {
+                        $(this).show();
+                    }
+                }
+            );
+
+        }
+    </script>
+
 
 </body>
 </html>
+

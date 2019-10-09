@@ -4,6 +4,10 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 // Embed
 
@@ -11,16 +15,13 @@ using System.Data.Entity;
 using Hnatob.DataAccessLayer.Abstract;
 using Hnatob.Domain.Models;
 using Hnatob.WebUI.Models;
-using Microsoft.AspNet.Identity;
 using Hnatob.DataAccessLayer.Context;
-using Microsoft.AspNet.Identity.EntityFramework;
-using System.Threading.Tasks;
 using Hnatob.DataAccessLayer;
-using System.Diagnostics;
+using Hnatob.WebUI.Models.Pagination;
 
 namespace Hnatob.WebUI.Controllers
 {
-    [Authorize (Roles = "manager")]
+    [Authorize(Roles = "manager")]
     public class EmployeesController : Controller
     {
         // GET: Employees
@@ -44,13 +45,18 @@ namespace Hnatob.WebUI.Controllers
         }
 
 
-        public ActionResult Users()
+        public ActionResult Users(int page = 1, int pageSize = 3/*20*/)
         {
-            var userList = repositoryPeople.GetUsers()
+            PeopleListPaginationViewMode peopleList = new PeopleListPaginationViewMode
+            {
+                People = repositoryPeople.GetUsers()
                .GroupJoin(repositoryPeople.GetEmployees(),
                        u => u.Id,
                        e => e.UserId,
-                       (u, e) => new { User = u, Employee = e.DefaultIfEmpty()
+                       (u, e) => new
+                       {
+                           User = u,
+                           Employee = e.DefaultIfEmpty()
                            .Select(x => new EmployeeView
                            {
                                Name = x.Name,
@@ -59,17 +65,28 @@ namespace Hnatob.WebUI.Controllers
                                Birthday = x.Birthday
                            })
                        })
-                           .SelectMany(a => a.Employee
-                               .Select(b => new User
-                               {
-                                   Id = a.User.Id,
-                                   PhoneNumber = a.User.PhoneNumber,
-                                   Email = a.User.Email,
-                                   employeeView = b
-                               })
-                            ).ToList();
+                        .SelectMany(a => a.Employee
+                            .Select(b => new User
+                            {
+                                Id = a.User.Id,
+                                PhoneNumber = a.User.PhoneNumber,
+                                Email = a.User.Email,
+                                employeeView = b
+                            })
+                        )
+                        .OrderBy(o=>o.employeeView.Surname).ThenBy(o=>o.employeeView.Name).ThenBy(o=>o.Email)
+                        .Skip((page - 1)*pageSize)
+                        .Take(pageSize)
+                        .ToList(),
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = pageSize,
+                    TotalItems = repositoryPeople.GetUsers().Count(),
+                }
+            };
 
-            return View(userList);
+            return View(peopleList);
         }
 
 
@@ -100,89 +117,88 @@ namespace Hnatob.WebUI.Controllers
         public ActionResult Delete(string id)
         {
             var user = repositoryPeople.GetUser(id);
-            var model = new RoutViewModels
+            var model = new RoutViewModels();
+            if (user != null)
             {
-                Controller = "Employees",
-                Action = "Delete",
-                Id = id,
-                Title = "Delete",
-                Data = "Are you shure you want to delete this person?<br/>" + user.Email
-            };
-
-            return PartialView("RoutViewModels", model);
+                model.Controller = "Employees";
+                model.Action = "SaveDelete";
+                model.Id = id;
+                model.Title = "Delete";
+                model.Data = new HtmlString(
+                    "Are you shure you want to delete this person - </br><strong>" + user.Email + "</strong>?"
+                    );
+            }
+            else
+            {
+                model.Controller = "Employees";
+                model.Action = "Users";
+                model.Id = id;
+                model.Title = "Delete";
+                model.Data = new HtmlString(
+                    "This user not found" + user.Email
+                    );
+            }
+            return PartialView("ModalConfirm", model);
         }
 
         [HttpPost]
-        public ActionResult Delete(RoutViewModels model)
+        public ActionResult SaveDelete(RoutViewModels model)
         {
             repositoryPeople.Delete(model.Id);
             return RedirectToAction("Users");
         }
 
         [HttpPost]
-        public async Task<ActionResult> BlockUserAsync(string id)
-        {
-            var userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(context));
-            var roles = await userManager.GetRolesAsync(id);
-            await userManager.RemoveFromRolesAsync(id, roles.ToArray());
-            await userManager.AddToRoleAsync(id, "user");
-            context.SaveChanges();
-            TempData["Message"] = string.Format($"User was blocked.");
-            return PartialView();//RedirectToAction("Users");
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> SetPositionAsync(string id)
-        {
-            // принимает string Id человека, права которого будут изменены.
-            var user =  await context.Users.FirstOrDefaultAsync(p => p.Id == id);
-            SetDataViewModel viewModel = new SetDataViewModel
-            {
-                Id = user.Id,
-                UserName = user.UserName,
-                Email = user.Email,
-                EmailConfirmed = user.EmailConfirmed
-            };
-            if (viewModel.EmailConfirmed)
-            {
-                var curentPerson = await context.Employee.FirstOrDefaultAsync(e => e.UserId == id);
-                var posts = await context.Positions.Select(p => p.Name).ToListAsync();
-
-                viewModel.CurentData = curentPerson.Positions.Select(p => p.Name).ToList();
-                viewModel.AllData = posts;
-            }
-            // запрос к бд Users.EmailConfirmed, если пользователь подтвердил эмейл идем дальше иначе возвращяем сообщение "Пользователь еще не подтвердил эмейл"
-
-            // этот метод возвращяет частичное представление с отображением действующих для пользователя разрешений.
-            // сообщение отображаются в поп-ап - частичное представление
-            return PartialView(viewModel);
-        }
-
-        [HttpPost]
         public ActionResult SetPosition(string id)
         {
-            // принимает string Id человека, права которого будут изменены.
-            var user = context.Users.FirstOrDefault(p => p.Id == id);
-            SetDataViewModel viewModel = new SetDataViewModel
+            var user = repositoryPeople.GetUser(id);
+            var model = new RoutViewModels
             {
-                Id = user.Id,
-                UserName = user.UserName,
-                Email = user.Email,
-                EmailConfirmed = user.EmailConfirmed
+                Controller = "Employees",
+                Action = "Users",
+                Id = id,
+                Title = "Position"
             };
-            if (viewModel.EmailConfirmed)
+            if (user != null)
             {
-                var curentPerson = context.Employee.FirstOrDefault(e => e.UserId == id);
-                var posts = context.Positions.Select(p => p.Name).ToList() ?? new List<string>();
-
-                viewModel.CurentData = curentPerson?.Positions?.Select(p => p.Name).ToList() ?? new List<string>();
-                viewModel.AllData = posts;
+                if (user.EmailConfirmed == true)
+                {
+                    model.Controller = "Employees";
+                    model.Action = "SavePosition";
+                    model.Id = id;
+                    model.Title = "Position";
+                    string htmlString = "";
+                    string check = "";
+                    var userPosition = repositoryPeople.GetEmployee(id)
+                        ?.Positions.Select(p => p.Name)
+                        .ToList() ?? new List<string>();
+                    var allPosition = context.Positions.Select(p => p.Name)
+                        .ToList() ?? new List<string>();
+                    foreach (var item in allPosition)
+                    {
+                        check = "";
+                        if (userPosition.Contains(item))
+                        {
+                            check = "checked";
+                        }
+                        htmlString +=
+                       "<div class=\"form-check\">" +
+                           $"<input id = \"{item}\" name=\"{item}\" type=\"checkbox\" {check} class=\"form-check-input\">" +
+                           $"<label class=\"form-check-label\" for=\"{item}\" checked autocomplete=\"off\">{item}</label>" +
+                       "</div>";
+                    }
+                    model.Data = new HtmlString(htmlString);
+                }
+                else
+                {
+                    model.Data = new HtmlString("<label>This person don't confirmed email.</label>");
+                }
             }
-            // запрос к бд Users.EmailConfirmed, если пользователь подтвердил эмейл идем дальше иначе возвращяем сообщение "Пользователь еще не подтвердил эмейл"
-
-            // этот метод возвращяет частичное представление с отображением действующих для пользователя разрешений.
-            // сообщение отображаются в поп-ап - частичное представление
-            return PartialView(viewModel);
+            else
+            {
+                model.Data = new HtmlString("This user not found" + user.Email);
+            }
+            return PartialView("ModalConfirm", model);
         }
 
 
@@ -202,17 +218,17 @@ namespace Hnatob.WebUI.Controllers
             //Check EmailConfirmed;
             if (user.EmailConfirmed)
             {
-            //Get all data of positions;
+                //Get all data of positions;
                 var posts = context.Positions.ToList();
-                var empl  = context.Employee.FirstOrDefault(e => e.UserId == id);
-            //Delete all dependent person with position;
+                var empl = context.Employee.FirstOrDefault(e => e.UserId == id);
+                //Delete all dependent person with position;
                 List<Position> newPosts = new List<Position>();
                 foreach (var key in Request.Form.AllKeys)
                 {
                     if (key == "Id") continue;
                     var val = posts.FirstOrDefault(p => p.Name == key);
-            //Create new dependent;
-                    if( val != null)
+                    //Create new dependent;
+                    if (val != null)
                     {
                         newPosts.Add(val);
                     }
@@ -220,12 +236,12 @@ namespace Hnatob.WebUI.Controllers
                 }
                 if (empl == null)
                 {
-            // запрос к бд Employee на создание нового работника и установление связи его с User(ом);
+                    // запрос к бд Employee на создание нового работника и установление связи его с User(ом);
                     context.Employee.Add(new Employee {
                         UserId = id,
                         Birthday = DateTime.Now,
                         Positions = newPosts
-                    } );
+                    });
                 }
                 else
                 {
@@ -236,8 +252,8 @@ namespace Hnatob.WebUI.Controllers
                     }
                     else
                     {*/
-                        empl.Positions.ToList().Clear();
-                        empl.Positions = newPosts;
+                    empl.Positions.ToList().Clear();
+                    empl.Positions = newPosts;
                     //}
                 }
                 context.SaveChanges();
@@ -247,28 +263,55 @@ namespace Hnatob.WebUI.Controllers
 
 
         [HttpPost]
-        public ActionResult SetAccesss(string id)
+        public ActionResult SetAccess(string id)
         {
-            // принимает string Id человека, права которого будут изменены.
             var userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(context));
-            var user = context.Users.FirstOrDefault(p => p.Id == id);
-            SetDataViewModel viewModel = new SetDataViewModel
-            {
-                Id = user.Id,
-                UserName = user.UserName,
-                Email = user.Email,
-                EmailConfirmed = user.EmailConfirmed
+            var user = repositoryPeople.GetUser(id);
+            var model = new RoutViewModels {
+                Controller = "Employees",
+                Action = "Users",
+                Id = id,
+                Title = "Access"
             };
-            if (viewModel.EmailConfirmed)
+            if (user != null)
             {
-                viewModel.CurentData = userManager.GetRoles(id).ToList() ?? new List<string>();
-                viewModel.AllData = context.Roles.Where(r => r.Name != "admin").Select( r => r.Name ).ToList();
-            }
-            // запрос к бд Users.EmailConfirmed, если пользователь подтвердил эмейл идем дальше иначе возвращяем сообщение "Пользователь еще не подтвердил эмейл"
+                if (user.EmailConfirmed == true)
+                {
+                    model.Controller = "Employees";
+                    model.Action = "SaveAccess";
+                    model.Id = id;
+                    model.Title = "Access";
 
-            // этот метод возвращяет частичное представление с отображением действующих для пользователя разрешений.
-            // сообщение отображаются в поп-ап - частичное представление
-            return PartialView(viewModel);
+                    var userRole = userManager.GetRoles(id).ToList() ?? new List<string>();
+                    var allRoles = context.Roles.Where(r => r.Name != "admin").Select(r => r.Name).ToList();
+                    string htmlString = "";
+                    foreach (var item in allRoles)
+                    {
+                        string check = "";
+                        if (userRole.Contains(item))
+                        {
+                            check = "checked";
+                        }
+                        htmlString +=
+                        "<div class=\"form-check\">" +
+                            $"<input id = \"{item}\" name=\"{item}\" type=\"checkbox\" {check} class=\"form-check-input\">" +
+                            $"<label class=\"form-check-label\" for=\"{item}\" checked autocomplete=\"off\">{item}</label>" +
+                        "</div>";
+                    }
+                    model.Data = new HtmlString(htmlString);
+                }
+                else
+                {
+                    model.Data = new HtmlString("<label>This person don't confirmed email.</label>");
+                }
+            }
+            else
+            {
+                model.Data = new HtmlString(
+                    "This user not found" + user.Email
+                    );
+            }
+            return PartialView("ModalConfirm", model);
         }
 
 
@@ -283,7 +326,7 @@ namespace Hnatob.WebUI.Controllers
             {
                 var userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(context));
                 var oldRoles = userManager.GetRoles(id);
-                
+
                 //Get all data of positions;
                 var roles = context.Roles.Where(r => r.Name != "admin").Select(r => r.Name).ToList();
                 List<string> newRoles = new List<string>();

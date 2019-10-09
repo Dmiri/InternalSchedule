@@ -34,38 +34,42 @@
     @*---------------------------------------------------------------------------------------------------------------------*@
     <div class="col-md-5">
         @if (Model.Responsibles.Count > 0)
-    {
-        <h5>@Html.Label("Responsibles:", new { @class = "control-label" })</h5>
-}
+        {
+            <h5><strong>@Html.Label("Responsibles:", new { @class = "control-label" })</strong></h5>
+        }
         @foreach (var item in Model.Responsibles)
-    {
-        <div>
-            <strong>@Html.Label(item.Position.Name, htmlAttributes: new { @class = "control-label" })</strong> -
-            @Html.Display(item.PersonName)
-        </div>
-}
+        {
+            <div>
+                <strong>@Html.Label(item.Position?.Name ?? "Undefined", htmlAttributes: new { @class = "control-label" }): </strong>
+                @item.PersonName - @item.Comment
+            </div>
+        }
         @*--------------------------------------------------------------------------------------*@
 
 
         @if (Model.Responsibles.Count > 0)
         {
-        <label><strong>Services: </strong></label>
+            <h5><label><strong>Services: </strong></label></h5>
         }
         @foreach (var item in Model.CommentsToServices)
         {
-        <div>
-            <strong>@Html.Label(item.ServiceName, htmlAttributes: new { @class = "control-label" })</strong> -
-            @Html.Display(item.Comment)
-        </div>
+            <div>
+                <strong>@Html.Label(item.ServiceName, htmlAttributes: new { @class = "control-label" })</strong> -
+                @item.Comment
+            </div>
         }
     </div>
-
-
 </div>
-    <div class="row">
-        <div class="col-md-offset-2 col-md-10">
-            @Html.ActionLink("Back to List", "Schedule", null, new { @class = "btn btn-default btn-dark" })
-            @Html.ActionLink("Edit", "Edit", new { eventId = Model.Id }, new { @class = "btn btn-warning" })
-        </div>
+
+
+<div class="row">
+    <div class="col-md-offset-2 col-md-10">
+        @Html.ActionLink("Back to List", "Schedule", null, new { @class = "btn btn-default btn-dark" })
+        @Html.ActionLink("Edit", "Edit", new { eventId = Model.Id },
+       new {
+           @class = "btn btn-warning",
+           style = "display:none;",
+           data_access = "editor",
+       })
     </div>
 </div>

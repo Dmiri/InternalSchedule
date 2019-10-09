@@ -14,7 +14,7 @@ namespace Hnatob.DataAccessLayer.Abstract
 
         public abstract IQueryable<Event> GetEvents();
 
-        public abstract Event GetObject(int iventId);
+        public abstract Event GetEvent(int iventId);
 
         public abstract void Update(Event model);
 

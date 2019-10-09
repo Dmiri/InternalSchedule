@@ -63,8 +63,10 @@ namespace Hnatob.WebUI
 
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {
-                ClientId = "1035571556692-qohq2jc3tv7ev5ipdrg0cbtlujiq3jn6.apps.googleusercontent.com",
-                ClientSecret = "iD2UwN7d_77M7uIbzMc3eYXz"
+                //ClientId = "1035571556692-qohq2jc3tv7ev5ipdrg0cbtlujiq3jn6.apps.googleusercontent.com",
+                //ClientSecret = "iD2UwN7d_77M7uIbzMc3eYXz"
+                ClientId = "585358820772-cquf3jbsttqtg0lv22mice2sutv62f4r.apps.googleusercontent.com",
+                ClientSecret = "TCXJ4tusBe6h3v1YyjoAIXls"
             });
         }
     }

@@ -8,14 +8,14 @@
             <input name="responsibleId" type="hidden" class="" value="@Model[i].Id" />
             <div class="col-12 col-lg-5">
                 <div id="post">
-                    <div class="dropdown btn-group p-1">
-                        @{
-                    string post = @Model[i].Position?.Name ?? "Position";
-                    string name = @Model[i].Person?.Name ?? @Model[i].PersonName;
-                        }
-                        <input name="hidenParamPost" type="hidden" class="" value="@Model[i].PositionId" />
+                    @{
+                        string post = @Model[i].Position?.Name ?? "Position";
+                        string name = @Model[i].Person?.Name ?? @Model[i].PersonName;
+                    }
+                    <div class="form-group dropdown btn-group p-1">
                         <input name="ResponsiblePost" class="form-control btn btn-info"
                                value="@post">
+                        <input name="hidenParamPost" type="hidden" class="" value="@Model[i].PositionId" />
                         <button class="btn btn-info dropdown-toggle dropdown-toggle-split"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="sr-only"> </span>
@@ -23,17 +23,17 @@
                         <div class="dropdown-menu dropdown-menu-right">
                             <label class="dropdown-item" data-itemid="0">Empty</label>
                             @foreach (var row in ViewBag.Positions)
-                            {
-                        <label class="dropdown-item" data-itemid="@row.Id.ToString()">@row.Name</label>
-                            }
+        {
+                    <label class="dropdown-item" data-itemid="@row.Id.ToString()">@row.Name</label>
+}
                         </div>
                     </div>
                 </div>
 
                 <div id="name">
-                    <div class="dropdown btn-group p-1">
+                    <div class="form-group dropdown btn-group p-1">
+                        <input name="ResponsibleName" class="form-control btn btn-outline-info" value="@name" />
                         <input name="hidenParamName" type="hidden" class="" value="@Model[i].PersonId" />
-                        <input name="ResponsibleName" class="form-control" value="@name" />
                         <button class="btn btn-sm btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="sr-only"></span>
                         </button>

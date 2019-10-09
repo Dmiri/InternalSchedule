@@ -16,7 +16,7 @@ namespace Hnatob.DataAccessLayer.Concrete
 
         public override IQueryable<Event> GetEvents() => context.Events;
 
-        public override Event GetObject(int iventId)
+        public override Event GetEvent(int iventId)
         {
             var dbEntry = context.Events.Find(iventId);//FirstOrDefault
             return dbEntry;
@@ -31,14 +31,19 @@ namespace Hnatob.DataAccessLayer.Concrete
             if (_event.Id == 0)
                 dbEntry = new Event();
 
-            else dbEntry = context.Events.FirstOrDefault(e => e.Id == _event.Id);
+            else
+            {
+                dbEntry = context.Events.FirstOrDefault(e => e.Id == _event.Id);
+                dbEntry.Id = _event.Id;
+                if (dbEntry == null || dbEntry.Start <= DateTime.Now)
+                    dbEntry = new Event();
+            }
             if (dbEntry != null)
             {
                 // TODU: Use method for copy http://docs.automapper.org
                 dbEntry.Access = _event.Access;
                 dbEntry.Description = _event.Description;
                 dbEntry.Duration = _event.Duration;
-                dbEntry.Id = _event.Id;
                 dbEntry.Location = _event.Location;
                 dbEntry.EventType = _event.EventType;
                 dbEntry.Start = _event.Start;
@@ -61,7 +66,7 @@ namespace Hnatob.DataAccessLayer.Concrete
                             context.CommentsToservices.Remove(item);
                         }
                         dbEntry.CommentsToServices.AddRange(_event.CommentsToServices);
-                        if (_event.Id == 0) context.Events.Add(dbEntry);
+                        if (dbEntry.Id == 0) context.Events.Add(dbEntry);
                         context.SaveChanges();
                         transaction.Commit();
                     }

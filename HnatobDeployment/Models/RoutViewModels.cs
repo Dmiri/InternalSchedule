@@ -9,14 +9,17 @@ namespace Hnatob.WebUI.Models
     {
         public RoutViewModels()
         {
-            //Controller = "";
-            //Action = "";
+            Data = new HtmlString("");
+            ButtonCancel = "Cancel";
+            ButtonConfirm = "Confirm";
         }
 
         public string Controller { get; set; }
         public string Action { get; set; }
         public string Id { get; set; }
         public string Title { get; set; }
-        public string Data { get; set; }
+        public HtmlString Data { get; set; }
+        public string ButtonCancel { get; set; }
+        public string ButtonConfirm { get; set; }
     }
 }

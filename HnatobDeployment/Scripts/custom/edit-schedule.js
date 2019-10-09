@@ -4,7 +4,7 @@ window.onload = function () {
     togglesEvent();
     inputStartEvent();
     inputDurationEvent();
-    resetFormsAndHidenEvent();
+    resetFormsAndHidenEvent();//?????????как переделать?"#responsibles"
     dropdownMenuEvent();
     //console.log("================================================================");
 
@@ -14,13 +14,12 @@ window.onload = function () {
     unicPositionList();
 
     addRowService();
-    $('.datepicker').datepicker({
-        format: 'dd.mm.yyyy',
-        startDate: '0d'
+    $(".datepicker").datepicker({
+        format: "dd.mm.yyyy",
+        startDate: "0d"
     });
 
     $().keydown(function (event) {
-        console.log(event.keyCode);
         if (event.keyCode = 13) event.preventDefault();
     });
 
@@ -71,6 +70,7 @@ function resetFormsAndHidenEvent(start = document) {
     jForms.on("change", function (e) {
         $(e.target).attr("data-itemid", "");
         $(e.target).parent().find("[name^=hidenParam]").attr("value", 0);
+        $(e.target).attr("value", e.target.value);
     });
 }
 
@@ -85,12 +85,18 @@ function dropdownMenuEvent(start = document) {
         let jval = $(this).find(".form-control");
         let jitems = $(this).find(".dropdown-menu .dropdown-item");
         jitems.on("click", function (e) {
-            //console.log("dropdownMenuEvent - click");
-            jval.attr("value", this.textContent.replace(/\s+/g, " ").replace(/\s$/, ""));
+
+            console.log(jval.attr("value"));
+            let val = this.textContent.replace(/\s+/g, " ").replace(/\s$/, "");
+            jval.attr("value", val);
+            jval.val(val);
+
             let varId = $(e.toElement).attr("data-itemid");//.dataset.itemid;
+
             if (varId !== null && varId !== undefined) {
-                if (jhidenParam !== undefined && jhidenParam !== null)
+                if (jhidenParam !== undefined && jhidenParam !== null) {
                     jhidenParam.attr("value", varId);
+                }
                 else {
                     jval.attr( "data-itemid", varId);
                 }
@@ -102,7 +108,7 @@ function dropdownMenuEvent(start = document) {
 function sortableList(start = document) {
     if (start === null) return;
     let jElement = $(start).find("#sortable");
-    console.log(jElement);
+    //console.log(jElement);
     jElement.sortable();
     jElement.disableSelection();
 };
@@ -251,7 +257,7 @@ function addRowResponsible() {
     let jitems = dropdowns.find(".dropdown-menu .dropdown-item");
     jitems.on("click", function (e) {
         let postList = $("#responsibles #list #sortable");
-        console.log(postList);
+        //console.log(postList);
         if (postList === undefined || postList === null) return;
         let position = e.toElement.dataset.itemid;
         var newRowResponsibles = new Promise((resolve, reject) => {

@@ -8,6 +8,8 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Hnatob.WebUI.Models;
 using Hnatob.DataAccessLayer;
+using System.Collections.Generic;
+using Hnatob.DataAccessLayer.Context;
 
 namespace Hnatob.WebUI.Controllers
 {
@@ -16,9 +18,11 @@ namespace Hnatob.WebUI.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationDbContext context;
 
-        public ManageController()
+        public ManageController(ApplicationDbContext context)
         {
+            this.context = context;
         }
 
         public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
@@ -385,6 +389,53 @@ namespace Hnatob.WebUI.Controllers
             Error
         }
 
-#endregion
+        #endregion
+
+
+
+        #region custom
+        [AllowAnonymous]
+        public ActionResult Navbar(/*ApplicationDbContext context*/)
+        {
+            if (context == null)
+            {
+                throw new ArgumentNullException("No arguments");
+            }
+
+            var id = User.Identity.GetUserId();
+            if (id != null)
+            {
+                var userManager = new ApplicationUserManager(
+                    new Microsoft.AspNet.Identity.EntityFramework.UserStore<Domain.Models.ApplicationUser>(context));
+                var userRole = userManager.GetRoles(id).ToList() ?? new List<string>();
+                int role = 0;
+                foreach (var item in userRole)
+                {
+                    switch (item)
+                    {
+                        case "user":
+                            role += 1000;
+                            break;
+                        case "employee":
+                            role += 100;
+                            break;
+                        case "editor":
+                            role += 10;
+                            break;
+                        case "manager":
+                            role += 1;
+                            break;
+                    }
+                }
+                TempData["role"] = role.ToString();
+            }
+            else
+            {
+                TempData["role"] = "0000";
+            }
+            return PartialView();
+        }
+        #endregion
+
     }
 }

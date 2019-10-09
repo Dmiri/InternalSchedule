@@ -17,6 +17,8 @@ namespace Hnatob.WebUI.Infrastructure
         {
             switch (controllerName)
             {
+                case "Manage":
+                    return new ManageController(new ApplicationDbContext());
                 case "Scheduler":
                     //targetType = typeof(SchedulerController);
                     return new SchedulerController(

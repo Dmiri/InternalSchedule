@@ -13,6 +13,7 @@ namespace Hnatob.WebUI.Models
         public string Name { get; set; }
         public string Patronymic { get; set; }
         public string Surname { get; set; }
+        [Required(ErrorMessage = "Please enter your Birthday date.")]
         public DateTime Birthday { get; set; }
 
         public string Nickname { get; set; }

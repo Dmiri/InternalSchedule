@@ -31,11 +31,19 @@
                     </label>
                 </div>
 
+                @Html.ValidationMessageFor(model => model.EventType, "", new { @class = "text-danger" + @columnData })
                 <div class="form-group">
                     @Html.LabelFor(model => model.EventType, htmlAttributes: new { @class = "control-label" + @columnName })
-                    @Html.ValidationMessageFor(model => model.EventType, "", new { @class = "text-danger" })
                     <div class="dropdown btn-group">
-                        @Html.EditorFor(model => model.EventType, new { htmlAttributes = new { @class = "form-control" + @columnData, placeholder = "Event's type" } })
+                        @Html.EditorFor(model => model.EventType, new
+            {
+                htmlAttributes =
+             new
+             {
+                 @class = "form-control btn btn-outline-info" + @columnData,
+                 placeholder = "Event's type",
+             }
+            })
                         <button type="button" class="btn btn-info btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="sr-only"> </span>
                         </button>
@@ -44,7 +52,7 @@
                             {
                                 if (item != "")
                                 {
-                                    <label class="dropdown-item">@item</label>
+                        <label class="dropdown-item">@item</label>
                                 }
                             }
 
@@ -52,66 +60,83 @@
                     </div>
                 </div>
 
+                @Html.ValidationMessageFor(model => model.Title, "", new { @class = " text-danger" + @columnData })
                 <div class="form-group">
                     @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label" + @columnName })
-                    @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
                     <div class="dropdown btn-group">
-                        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" + @columnData, placeholder = "Title for event" } })
+                        @Html.EditorFor(model => model.Title, new
+            {
+                htmlAttributes =
+              new
+              {
+                  @class = "form-control btn btn-outline-info" + @columnData,
+                  placeholder = "Title for event",
+
+              }
+            })
                         <button type="button" class="btn btn-info btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="sr-only"> </span>
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
                             @foreach (var item in ViewBag.TitleEvent)
                             {
-                                <label class="dropdown-item">@item</label>
+                    <label class="dropdown-item">@item</label>
                             }
                         </div>
                     </div>
                 </div>
 
+                @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" + @columnData })
                 <div class="form-group">
                     @Html.LabelFor(model => model.Location, htmlAttributes: new { @class = "control-label" + @columnName })
-                    @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
                     <div class="dropdown btn-group">
-                        @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control" + @columnData, placeholder = "Event's location" } })
+                        @Html.EditorFor(model => model.Location, new
+            {
+                htmlAttributes =
+             new
+             {
+                 @class = "form-control btn btn-outline-info" + @columnData,
+                 placeholder = "Event's location",
+             }
+            })
                         <button type="button" class="btn btn-info btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="sr-only"> </span>
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
                             @foreach (var item in ViewBag.Location)
                             {
-                                <label class="dropdown-item">@item</label>
+                    <label class="dropdown-item">@item</label>
                             }
                         </div>
                     </div>
                 </div>
 
+                @Html.ValidationMessageFor(model => model.Start, "", new { @class = "text-danger" + @columnData })
                 <div>
                     <input name="Start" type="hidden" class="form-control" value="@Model.Start" />
                     <div class="form-group">
                         <label class="@columnName">Day</label>
-                        <input id="day" class="datepicker control-label @columnData" placeholder="dd.mm.yyyy">
+                        <input id="day" class="datepicker control-label btn-outline-info @columnData" placeholder="dd.mm.yyyy">
                     </div>
                     <div class="form-group">
-                        <label class="@columnName" >Time</label>
+                        <label class="@columnName">Time</label>
                         <input id="time" type="time" class="btn btn-info control-label  col-auto col-sm-4" />
                     </div>
                     @*@Html.LabelFor(model => model.Start, htmlAttributes: new { @class = "control-label" })*@
-                    @Html.ValidationMessageFor(model => model.Start, "", new { @class = "text-danger" })
                     @*@Html.EditorFor(model => model.Start, new { htmlAttributes = new { @class = "form-control" } })*@
                 </div>
 
+                @Html.ValidationMessageFor(model => model.Duration, "", new { @class = "text-danger" + @columnData })
                 <div class="form-group">
                     @Html.HiddenFor(model => model.Duration, htmlAttributes: new { @class = "control-label" })
                     @Html.LabelFor(model => model.Duration, htmlAttributes: new { @class = "control-label" + @columnName })
                     <input id="duration" type="time" class="btn btn-info control-label  col-auto col-sm-4" />
                     @*<span class="validity"></span>*@
-                    @Html.ValidationMessageFor(model => model.Duration, "", new { @class = "text-danger" })
                 </div>
 
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" + @columnData })
                 <div class="form-group">
                     @*@Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })*@
-                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                     <label class="@columnName">Description:</label>
                     <textarea name="Description" class="form-control col-auto" rows="3">@Model.Description</textarea>
                     @*@Html.TextAreaFor(model => model.Description, 3, 40, new { htmlAttributes = new { @class = "form-control" } })*@
@@ -131,7 +156,7 @@
                         <div class="row">
                             <div id="addrowresp" class="btn-group float-right">
                                 <button class="form-control btn btn-sm btn-info">Add responsible</button>
-                                <button class="btn btn-info dropdown-toggle dropdown-toggle-split"
+                                <button class="btn btn-info btn-sm dropdown-toggle dropdown-toggle-split"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="sr-only"> </span>
                                 </button>
@@ -154,7 +179,7 @@
                         <div class="row">
                             <div id="addrowservice" class="btn-group float-right">
                                 <button class="form-control btn btn-sm btn-info">Add service</button>
-                                <button class="btn btn-info dropdown-toggle dropdown-toggle-split"
+                                <button class="btn btn-info btn-sm dropdown-toggle dropdown-toggle-split"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="sr-only"> </span>
                                 </button>

@@ -12,6 +12,7 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Hnatob.DataAccessLayer.Context;
 using Hnatob.Domain.Models;
+using System.Net.Mail;
 
 namespace Hnatob.WebUI
 {
@@ -19,8 +20,33 @@ namespace Hnatob.WebUI
     {
         public Task SendAsync(IdentityMessage message)
         {
+            var fromEmail = "khnatob.development@gmail.com";
+            var pass = "Qe12439524";
+
+            // SMTP-server create
+            var smtpClient = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new System.Net.NetworkCredential(fromEmail, pass),
+                //Timeout = 3000,
+            };
+
+
+            // mail create
+            var mail = new MailMessage(fromEmail, message.Destination);
+            mail.Subject = message.Subject;
+            mail.Body = message.Body;
+            mail.IsBodyHtml = true;
+
+            // send
+            return smtpClient.SendMailAsync(mail);
+
             // Plug in your email service here to send an email.
-            return Task.FromResult(0);
+            //return Task.FromResult(0);
         }
     }
 

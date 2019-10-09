@@ -1,0 +1,35 @@
+﻿@using Hnatob.WebUI.Models
+@model IEnumerable<Menu>
+
+@{
+    bool horizontal = ((bool)(ViewContext.RouteData.Values["horizontalNav"] ?? false));
+    string wrapperClasses = horizontal ? "btn-group btn-group-sm btn-group-justified" : null;
+}
+
+<div class="@wrapperClasses">
+    @Html.ActionLink("Home", "List", "Game", null,
+                            new
+                            {
+                                @class = horizontal
+                            ? "btn btn-default btm-sm"
+                            : "btn btn-block btn-default btn-lg"
+                            })
+
+    @foreach (var item in Model)
+    {
+        @Html.RouteLink(item.Title,
+                                  new
+                                  {
+                                      controller = item.Controller,
+                                      action = item.Action
+                                  },
+                                  new
+                                  {
+                                      @class = (horizontal
+                                      ? "btn btn-default btn-sm"
+                                      : "btn btn-block btn-default btn-lg")
+                                      + (item.Title == ViewBag.SelectedCategory ? "btn-primary" : "")
+                                  }
+                                  )
+    }
+</div>

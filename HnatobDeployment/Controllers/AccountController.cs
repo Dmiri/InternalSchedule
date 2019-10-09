@@ -12,6 +12,7 @@ using Hnatob.WebUI.Models;
 using Hnatob.Domain.Models;
 using Hnatob.DataAccessLayer.Context;
 using Hnatob.DataAccessLayer;
+using System.Net.Mail;
 
 namespace Hnatob.WebUI.Controllers
 {
@@ -73,6 +74,25 @@ namespace Hnatob.WebUI.Controllers
         {
             if (!ModelState.IsValid)
             {
+                //var user = await UserManager.FindAsync(model.Email, model.Password);
+                //if (user != null)
+                //{
+                //    if (user.EmailConfirmed == true)
+                //    {
+                //        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                //        return RedirectToLocal(returnUrl);
+                //    }
+                //    else
+                //    {
+                //        ModelState.AddModelError("", "Не подтвержден email.");
+                //    }
+                //}
+                //else
+                //{
+                //    ModelState.AddModelError("", "Неверный логин или пароль");
+                //}
+
+
                 return View(model);
             }
 
@@ -166,6 +186,7 @@ namespace Hnatob.WebUI.Controllers
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
+                    TempData["Message"] = string.Format($"An email has been sent to your email address with an email confirmation link");
                     return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);
@@ -214,10 +235,10 @@ namespace Hnatob.WebUI.Controllers
 
                 // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                 // Send an email with this link
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
             // If we got this far, something failed, redisplay form

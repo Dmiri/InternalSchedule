@@ -18,7 +18,7 @@
     <AssemblyName>Hnatob.WebUI</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort>44301</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
@@ -37,6 +37,12 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <IncludeIisSettings>false</IncludeIisSettings>
+    <DeployEncryptKey>Encryption password is used only if any deployment setting is marked as secure</DeployEncryptKey>
+    <PublishDatabaseSettings>
+      <Objects>
+      </Objects>
+    </PublishDatabaseSettings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -212,6 +218,7 @@
     <Compile Include="Controllers\api\EventsAsyncController.cs" />
     <Compile Include="Controllers\api\EventsController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
+    <Compile Include="HtmlHelpers\PagingHelpers.cs" />
     <Compile Include="Infrastructure\FactoryControllerWithParametr.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="IdentityConfig.cs" />
@@ -229,9 +236,11 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Menu.cs" />
     <Compile Include="Models\ModelForEvent.cs" />
+    <Compile Include="Models\Pagination\PagingInfo.cs" />
+    <Compile Include="Models\Pagination\PeopleListPaginationViewMode.cs" />
     <Compile Include="Models\ProfileViewModels.cs" />
     <Compile Include="Models\RoutViewModels.cs" />
-    <Compile Include="Models\SetDataViewModel.cs" />
+    <Compile Include="Models\Pagination\ScheduleListPaginationViewModel.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserDetaillsViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -265,7 +274,8 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\custom\edit-schedule.js" />
-    <Content Include="Scripts\custom\settings-users.js" />
+    <Content Include="Scripts\custom\general.js" />
+    <Content Include="Scripts\custom\modalConfirm.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />
@@ -274,21 +284,21 @@
     <Content Include="Scripts\esm\popper.js.map" />
     <Content Include="Scripts\esm\popper-utils.min.js.map" />
     <Content Include="Scripts\esm\popper-utils.js.map" />
-    <Content Include="Scripts\bootstrap.min.js.map" />
-    <Content Include="Scripts\bootstrap.js.map" />
-    <Content Include="Scripts\bootstrap.bundle.min.js.map" />
-    <Content Include="Scripts\bootstrap.bundle.js.map" />
+    <Content Include="Content\bootstrap-datepicker3.standalone.css.map" />
+    <Content Include="Content\bootstrap-datepicker3.css.map" />
+    <Content Include="Content\bootstrap-datepicker.standalone.css.map" />
+    <Content Include="Content\bootstrap-datepicker.css.map" />
     <Content Include="Content\bootstrap.min.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-reboot.min.css.map" />
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
-    <Content Include="Content\bootstrap-datepicker3.standalone.css.map" />
-    <Content Include="Content\bootstrap-datepicker3.css.map" />
-    <Content Include="Content\bootstrap-datepicker.standalone.css.map" />
-    <Content Include="Content\bootstrap-datepicker.css.map" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
+    <Content Include="Scripts\bootstrap.min.js.map" />
+    <Content Include="Scripts\bootstrap.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.min.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.js.map" />
     <None Include="Scripts\jquery-3.0.0-vsdoc.js" />
     <Content Include="Scripts\jquery-3.0.0.js" />
     <Content Include="Scripts\jquery-3.0.0.min.js" />
@@ -450,11 +460,9 @@
     <Content Include="Views\Scheduler\GetResponsiblePerson.cshtml" />
     <Content Include="Views\Scheduler\ResponsibleForEdit.cshtml" />
     <Content Include="Views\Scheduler\CommentsToServicesForEdit.cshtml" />
-    <Content Include="Views\Employees\SetPosition.cshtml" />
-    <Content Include="Views\Employees\SetPositionAsync.cshtml" />
-    <Content Include="Views\Employees\SetAccesss.cshtml" />
     <Content Include="Views\Profile\UsersProfile.cshtml" />
-    <Content Include="Views\Shared\ConfirmDelete.cshtml" />
+    <Content Include="Views\Shared\ModalConfirm.cshtml" />
+    <Content Include="Views\Manage\Navbar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -496,11 +504,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>61312</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/HnatobDeployment</IISUrl>
+          <IISUrl>https://localhost:44301/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

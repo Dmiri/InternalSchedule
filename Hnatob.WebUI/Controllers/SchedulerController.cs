@@ -19,6 +19,7 @@ using Hnatob.WebUI.Models;
 using Hnatob.Domain.Models;
 using Hnatob.Domain.Helper;
 using Hnatob.DataAccessLayer.Context;
+using Hnatob.WebUI.Models.Pagination;
 
 namespace Hnatob.WebUI.Controllers
 {
@@ -29,6 +30,7 @@ namespace Hnatob.WebUI.Controllers
         private readonly IUserRepository repositoryPeople;
         private readonly IResponsiblesRepository repositoryResponsibles;
         //private readonly ICommentToServiceRepository repositoryCommentToService;
+        //private int pageSize = 4;
 
         public SchedulerController(
             IScheduleRepository repositoryEvent, 
@@ -44,40 +46,116 @@ namespace Hnatob.WebUI.Controllers
         }
 
 
-
+        //TODO: Filter & sort
         // GET: Scheduler
         [AllowAnonymous]
-        public ViewResult Schedule()
+        public ActionResult Schedule(int page = 0, int pageSize = 7, string sortBy = "")
         {
-            List<Event> schedule;
-            //TODU: use case
-            if (User.IsInRole("editor"))
+            ScheduleListPaginationViewModel model;
+
+
+            DateTime startSelection = DateTime.Today;
+            DateTime endSelection;
+
+            var dateThis = DateTime.Today;
+
+            var dateLastEvent = repositoryEvent.GetEvents()
+                .OrderByDescending(e => e.Start).ThenBy(e => e.Location).ThenBy(e => e.Title)
+                .FirstOrDefault()
+                .Start;
+
+            var dateTimeFirstEvent = repositoryEvent.GetEvents()
+                .OrderBy(e => e.Start).ThenBy(e => e.Location).ThenBy(e => e.Title)
+                .FirstOrDefault()
+                .Start;
+            DateTime dateFirstEvent = new DateTime(dateTimeFirstEvent.Year, dateTimeFirstEvent.Month, dateTimeFirstEvent.Day);
+
+            int defaultPage;
+            int totalPage;
+
+            switch (pageSize)
             {
-                //TODU wiew all schedule and add ability to edit
-                schedule = repositoryEvent.GetEvents()
-                    .OrderBy(e => e.Start).ThenBy(e => e.Location).ThenBy(e => e.Title)
-                    .ToList();
+                case 1:
+                    defaultPage = (int)Math.Ceiling((dateThis - dateFirstEvent).TotalDays);
+                    totalPage = (int)Math.Ceiling((dateLastEvent - dateFirstEvent).TotalDays);
+                    startSelection = dateFirstEvent.AddDays(page-1);
+                    endSelection = startSelection.AddDays(1);
+                    break;
+                case 7:
+                    defaultPage = (int)Math.Ceiling((dateThis - dateFirstEvent).TotalDays / 7);
+                    totalPage = (int)Math.Ceiling((dateLastEvent - dateFirstEvent).TotalDays / 7);
+                    startSelection = dateFirstEvent.AddDays(7*(page-1));
+                    endSelection = startSelection.AddDays(7);
+                    break;
+                case 31:
+                    defaultPage = (int)Math.Ceiling((dateThis - dateFirstEvent).TotalDays / 30);
+                    totalPage = (int)Math.Ceiling((dateLastEvent - dateFirstEvent).TotalDays / 30);
+                    startSelection = dateFirstEvent.AddMonths(page-1);
+                    endSelection = startSelection.AddMonths(1);
+                    break;
+                default:
+                    defaultPage = (dateThis - dateFirstEvent).Days;
+                    totalPage = (dateLastEvent - dateFirstEvent).Days;
+                    startSelection = DateTime.Today;
+                    endSelection = startSelection.AddHours(24);
+                    break;
+            }
+            if (page == 0) page = defaultPage;
+
+            // return all schedule
+            if (User.IsInRole("editor") || User.IsInRole("employee"))
+            {
+                var test = repositoryEvent.GetEvents()
+                                   .OrderBy(e => e.Start).ThenBy(e => e.Location).ThenBy(e => e.Title)
+                                   .ToList();
+
+
+                model = new ScheduleListPaginationViewModel
+                {
+                    Schedule = repositoryEvent.GetEvents()
+                                    .OrderBy(e => e.Start).ThenBy(e => e.Location).ThenBy(e => e.Title)
+                                    .Where(e => e.Start >= startSelection && e.Start < endSelection)
+                                    .Take(pageSize)
+                                    .ToList(),
+                    PagingInfo = new PagingInfo
+                    {
+                        DefaulpPage = defaultPage,
+                        CurrentPage = page,
+                        ItemsPerPage = pageSize,
+                        TotalItems = repositoryEvent.GetEvents().Count(),
+                        TotalPages = totalPage,
+                    }
+                };
             }
 
+            // return only public schedule
             else
             {
-                if (User.IsInRole("employee"))
+                model = new ScheduleListPaginationViewModel
                 {
-                    //TODU wiew all schedule
-                    schedule = repositoryEvent.GetEvents()
+                    Schedule = repositoryEvent.GetEvents().Where(l => l.Access == Access.Public.ToString())
                         .OrderBy(e => e.Start).ThenBy(e => e.Location).ThenBy(e => e.Title)
-                        .ToList();
-                }
-                //TODU wiew public schedule
-                else schedule = repositoryEvent.GetEvents().Where(l => l.Access == Access.Public.ToString())
-                        .OrderBy(e => e.Start).ThenBy(e => e.Location).ThenBy(e => e.Title)
-                        .ToList();
+                        .Where(e => e.Start >= startSelection && e.Start < endSelection)
+                        .Take(pageSize)
+                        .ToList(),
+                    PagingInfo = new PagingInfo
+                    {
+                        CurrentPage = page,
+                        ItemsPerPage = pageSize,
+                        TotalItems = repositoryEvent.GetEvents().Where(l => l.Access == Access.Public.ToString()).Count(),
+                    }
+                };
             }
-            return View("Schedule", schedule);
+
+            ViewBag.Start = startSelection.ToShortDateString();
+            ViewBag.End = endSelection.ToShortDateString();
+
+            return View("Schedule", model);//schedule);
         }
 
 
-        [Authorize (Roles = "editor")]
+
+        [Authorize(Roles = "editor")]
         public ActionResult Edit(int? eventId)
         {
             Event dbEntry;
@@ -87,8 +165,6 @@ namespace Hnatob.WebUI.Controllers
                     .Where(o => o.Id == eventId)
                     .Include("Responsibles.Person")
                     .Include("Responsibles.Position")
-                    //.Include(c => c.CommentsToServices)
-                    //.ThenInclude()
                     .ToList();
 
                 dbEntry = entry[0];
@@ -111,14 +187,13 @@ namespace Hnatob.WebUI.Controllers
             {
                 ViewBag.Services = context.Services.Select(e => e.Name).Where(e => e != "" && e != null).ToList();
             }
-
-
             return View(dbEntry);
         }
 
 
-        [Authorize(Roles = "editor")]
+
         [HttpPost]
+        [Authorize(Roles = "editor")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(/*Event dbEntry*/)
         {
@@ -244,7 +319,7 @@ namespace Hnatob.WebUI.Controllers
                 }
 
                 TempData["Message"] = string.Format($"The change was saved for the event \"{dbEntry.Title}\"");
-                IEnumerable<Event> schedule = repositoryEvent.GetEvents();
+                //IEnumerable<Event> schedule = repositoryEvent.GetEvents();
                 return Redirect("Schedule");
             }
             else
@@ -348,18 +423,8 @@ namespace Hnatob.WebUI.Controllers
 
         }
 
-        //[HttpPost]
-        //public ActionResult UploadModelForEdit(ICollection<HttpPostAttribute> httpPostAttributes)
-        //{
-        //    foreach (var item in httpPostAttributes)
-        //    {
-
-        //    }
-        //    return null;
-        //}
-
-        //[Authorize]
         [HttpPost]
+        [Authorize(Roles = "editor")]
         public ActionResult ResponsibleForEdit(int position = 0)
         {
             var posts =  repositoryPeople.GetPositions().ToList();
@@ -373,11 +438,10 @@ namespace Hnatob.WebUI.Controllers
                     });
         }
 
-        [Authorize]
         [HttpPost]
+        [Authorize(Roles = "editor")]
         public ActionResult GetResponsiblePerson(int position)
         {
-
             if (position > 0)
             {
                 var employee = repositoryPeople.GetPositions()
@@ -400,8 +464,8 @@ namespace Hnatob.WebUI.Controllers
         }
 
 
-        //[Authorize]
         [HttpPost]
+        [Authorize(Roles = "editor")]
         public ActionResult CommentsToServicesForEdit(string serviceName)
         {
             //;
@@ -437,14 +501,8 @@ namespace Hnatob.WebUI.Controllers
 
 
 
-
-
-
-
-
-
-
         [HttpGet]
+        [Authorize(Roles = "employee")]
         public ActionResult Details(int eventId)
         {
             if (eventId == 0) return RedirectToAction("Schedule");
@@ -452,13 +510,44 @@ namespace Hnatob.WebUI.Controllers
             return View(ev);
         }
 
+
+        [HttpPost]
         [Authorize(Roles = "editor")]
-        [HttpGet]
-        public ActionResult Delete(int eventId)
+        public ActionResult Delete(int id)
         {
-            if(eventId == 0) return RedirectToAction("Schedule");
-            var ev = repositoryEvent.GetEvents().FirstOrDefault(e => e.Id == eventId);
-            if (ev != null) repositoryEvent.Delete(eventId);
+            var obj = repositoryEvent.GetEvent(id);
+            var model = new RoutViewModels();
+            if (obj != null)
+            {
+                model.Controller = "Scheduler";
+                model.Action = "SaveDelete";
+                model.Id = id.ToString();
+                model.Title = "Delete";
+                model.Data = new HtmlString(
+                    "Are you sure want to delete this event:</br>"
+                    + obj.Start + " - " + obj.Title + "?"
+                    );
+            }
+            else
+            {
+                model.Controller = "Scheduler";
+                model.Action = "Schedule";
+                model.Id = id.ToString();
+                model.Title = "Delete";
+                model.Data = new HtmlString("This event not found");
+            }
+            return PartialView("ModalConfirm", model);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "editor")]
+        public ActionResult SaveDelete(RoutViewModels model)
+        {
+            int id;
+            int.TryParse(model.Id, out id);
+            if (id == 0) return RedirectToAction("Schedule");
+            var ev = repositoryEvent.GetEvents().FirstOrDefault(e => e.Id == id);
+            if (ev != null) repositoryEvent.Delete(id);
             return RedirectToAction("Schedule");
         }
     }

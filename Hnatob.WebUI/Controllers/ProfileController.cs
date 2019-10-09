@@ -31,7 +31,6 @@ namespace Hnatob.WebUI.Controllers
 
         public ActionResult UsersProfile()
         {
-            //string id = "38f3e55a-f99f-4184-b737-b441bb9f8833";
             var id = User.Identity.GetUserId();
             var user = context.Users.FirstOrDefault(u => u.Id == id);
             var empl = context.Employee.FirstOrDefault(u => u.UserId == id);
@@ -71,8 +70,12 @@ namespace Hnatob.WebUI.Controllers
 
             user.PhoneNumber = model.PhoneNumber;
 
-            if (user.EmailConfirmed && empl != null)
+            if (user.EmailConfirmed && 
+                empl != null && 
+                verificationOfUserData(model))
             {
+                if (model.Birthday == new DateTime())
+                    model.Birthday = new DateTime(1900, 01, 01);
                 empl.Birthday = model.Birthday;
                 empl.Name = model.Name;
                 empl.Patronymic = model.Patronymic;
@@ -83,8 +86,15 @@ namespace Hnatob.WebUI.Controllers
             }
 
             context.SaveChanges();
+            TempData["Message"] = string.Format($"Changes saved.");
+            return RedirectToAction("UsersProfile");
+        }
 
-            return RedirectToAction("", "");
+
+        bool verificationOfUserData(ProfileViewModels model)
+        {
+
+            return true;
         }
 
     }
