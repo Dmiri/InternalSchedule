@@ -21,14 +21,12 @@
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 @Html.HiddenFor(model => model.Id)
 
-                @Html.HiddenFor(model => model.Access, new { value = Model.Access })
+                @Html.HiddenFor(model => model.Access, new { value = @Access.Private.ToString() })
                 <div class="btn-group btn-group-toggle btn-sm" data-toggle="buttons">
                     <label class="btn btn-secondary active">
-                        <input class=" btn btn-sm" type="radio" name=@Access.Private autocomplete="off">@Access.Private
-                    </label>
+                        <input class=" btn btn-sm" type="radio" name=@Access.Private autocomplete="on">@Access.Private</label>
                     <label class="btn btn-secondary">
-                        <input class=" btn btn-sm" type="radio" name=@Access.Public autocomplete="off">@Access.Public
-                    </label>
+                        <input class=" btn btn-sm" type="radio" name=@Access.Public autocomplete="off">@Access.Public</label>
                 </div>
 
                 @Html.ValidationMessageFor(model => model.EventType, "", new { @class = "text-danger" + @columnData })
@@ -155,7 +153,7 @@
                     <div class="float-right p-3">
                         <div class="row">
                             <div id="addrowresp" class="btn-group float-right">
-                                <button class="form-control btn btn-sm btn-info">Add responsible</button>
+                                <button class="form-control btn btn-sm btn-info dropdown-toggle-split">Add responsible</button>
                                 <button class="btn btn-info btn-sm dropdown-toggle dropdown-toggle-split"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="sr-only"> </span>
@@ -178,7 +176,7 @@
                     <div class="float-right p-3">
                         <div class="row">
                             <div id="addrowservice" class="btn-group float-right">
-                                <button class="form-control btn btn-sm btn-info">Add service</button>
+                                <button class="form-control btn btn-sm btn-info dropdown-toggle-split">Add service</button>
                                 <button class="btn btn-info btn-sm dropdown-toggle dropdown-toggle-split"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="sr-only"> </span>
@@ -200,8 +198,8 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                @Html.ActionLink("Back to List", "Schedule", null, new { @class = "btn btn-default btn-dark" })
-                <input id="submit" type="submit" value="Save" class="btn btn-default" />
+                @Html.ActionLink("Back to List", "Schedule", null, new { @class = "btn btn-default btn-secondary" })
+                <input id="submit" type="submit" value="Save" class="btn btn-success" />
             </div>
         </div>
     </div>

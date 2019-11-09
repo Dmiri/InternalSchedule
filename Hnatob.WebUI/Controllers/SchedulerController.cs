@@ -49,11 +49,12 @@ namespace Hnatob.WebUI.Controllers
         //TODO: Filter & sort
         // GET: Scheduler
         [AllowAnonymous]
-        public ActionResult Schedule(int page = 0, int pageSize = 7, string sortBy = "")
+        public ActionResult Schedule(int page = 0, string pageSize = "week", string access = "all", string type = "", string name = "")
         {
             ScheduleListPaginationViewModel model;
-
-
+            //int pageSizeForPageInfo = 0;
+            // Paging
+            // -----------------------------------------
             DateTime startSelection = DateTime.Today;
             DateTime endSelection;
 
@@ -68,60 +69,96 @@ namespace Hnatob.WebUI.Controllers
                 .OrderBy(e => e.Start).ThenBy(e => e.Location).ThenBy(e => e.Title)
                 .FirstOrDefault()
                 .Start;
+
             DateTime dateFirstEvent = new DateTime(dateTimeFirstEvent.Year, dateTimeFirstEvent.Month, dateTimeFirstEvent.Day);
+            
 
             int defaultPage;
             int totalPage;
 
-            switch (pageSize)
+            string patternText = @"[\w\s-.]*";
+
+            switch (pageSize.ToLower())
             {
-                case 1:
+                case "day":
                     defaultPage = (int)Math.Ceiling((dateThis - dateFirstEvent).TotalDays);
                     totalPage = (int)Math.Ceiling((dateLastEvent - dateFirstEvent).TotalDays);
+                    if (page < 1) page = defaultPage;
                     startSelection = dateFirstEvent.AddDays(page-1);
                     endSelection = startSelection.AddDays(1);
                     break;
-                case 7:
+                case "week":
                     defaultPage = (int)Math.Ceiling((dateThis - dateFirstEvent).TotalDays / 7);
                     totalPage = (int)Math.Ceiling((dateLastEvent - dateFirstEvent).TotalDays / 7);
-                    startSelection = dateFirstEvent.AddDays(7*(page-1));
+                    if (page < 1) page = defaultPage;
+                    startSelection = dateFirstEvent
+                        .AddDays(7*(page-1) - ((int)dateFirstEvent.DayOfWeek - 1));
                     endSelection = startSelection.AddDays(7);
                     break;
-                case 31:
+                case "month":
                     defaultPage = (int)Math.Ceiling((dateThis - dateFirstEvent).TotalDays / 30);
                     totalPage = (int)Math.Ceiling((dateLastEvent - dateFirstEvent).TotalDays / 30);
-                    startSelection = dateFirstEvent.AddMonths(page-1);
+                    if (page < 1) page = defaultPage;
+                    startSelection = dateFirstEvent
+                        .AddDays(-1 * (dateFirstEvent.Day - 1))
+                        .AddMonths(page-1);
                     endSelection = startSelection.AddMonths(1);
                     break;
                 default:
-                    defaultPage = (dateThis - dateFirstEvent).Days;
-                    totalPage = (dateLastEvent - dateFirstEvent).Days;
+                    defaultPage = (int)Math.Ceiling((dateThis - dateFirstEvent).TotalDays / 7);
+                    totalPage = (int)Math.Ceiling((dateLastEvent - dateFirstEvent).TotalDays / 7);
                     startSelection = DateTime.Today;
-                    endSelection = startSelection.AddHours(24);
+                    endSelection = startSelection.AddDays(7);
                     break;
             }
             if (page == 0) page = defaultPage;
 
+            // Filter
+            // -----------------------------------------
+            Func<Event, bool> filterAccess = e => {
+                bool result = true;
+                if ( Regex.IsMatch(access, patternText, RegexOptions.IgnoreCase) 
+                &&( string.IsNullOrEmpty(access)
+                    || access.ToLower() == "all" 
+                    || e.Access.ToLower() == access)
+                    )
+                    result = result && true;
+                else result = result && false;
+
+                if (Regex.IsMatch(type, patternText, RegexOptions.IgnoreCase)
+                && (string.IsNullOrEmpty(type)
+                    || type.ToLower() == "all" 
+                    || e.EventType.ToLower() == type)
+                    )
+                    result = result && true;
+                else result = result && false;
+
+                if (Regex.IsMatch(name, patternText, RegexOptions.IgnoreCase) 
+                && (string.IsNullOrEmpty(name) || e.Title.ToLower().Contains(name.ToLower())))
+                    result = result && true;
+                else result = result && false;
+
+                if (e.Start >= startSelection && e.Start < endSelection)
+                    result = result && true;
+                else result = result && false;
+
+                return result;
+            };
+
             // return all schedule
             if (User.IsInRole("editor") || User.IsInRole("employee"))
             {
-                var test = repositoryEvent.GetEvents()
-                                   .OrderBy(e => e.Start).ThenBy(e => e.Location).ThenBy(e => e.Title)
-                                   .ToList();
-
-
                 model = new ScheduleListPaginationViewModel
                 {
                     Schedule = repositoryEvent.GetEvents()
-                                    .OrderBy(e => e.Start).ThenBy(e => e.Location).ThenBy(e => e.Title)
-                                    .Where(e => e.Start >= startSelection && e.Start < endSelection)
-                                    .Take(pageSize)
-                                    .ToList(),
+                        .OrderBy(e => e.Start).ThenBy(e => e.Location).ThenBy(e => e.Title)
+                        .Where(filterAccess)
+                        .ToList(),
                     PagingInfo = new PagingInfo
                     {
                         DefaulpPage = defaultPage,
                         CurrentPage = page,
-                        ItemsPerPage = pageSize,
+                        //ItemsPerPage = pageSizeForPageInfo,
                         TotalItems = repositoryEvent.GetEvents().Count(),
                         TotalPages = totalPage,
                     }
@@ -133,24 +170,31 @@ namespace Hnatob.WebUI.Controllers
             {
                 model = new ScheduleListPaginationViewModel
                 {
-                    Schedule = repositoryEvent.GetEvents().Where(l => l.Access == Access.Public.ToString())
+                    Schedule = repositoryEvent.GetEvents()
+                        .Where(l => l.Access == Access.Public.ToString())
                         .OrderBy(e => e.Start).ThenBy(e => e.Location).ThenBy(e => e.Title)
-                        .Where(e => e.Start >= startSelection && e.Start < endSelection)
-                        .Take(pageSize)
+                        .Where(filterAccess)
                         .ToList(),
                     PagingInfo = new PagingInfo
                     {
+                        DefaulpPage = defaultPage,
                         CurrentPage = page,
-                        ItemsPerPage = pageSize,
+                        //ItemsPerPage = pageSizeForPageInfo,
                         TotalItems = repositoryEvent.GetEvents().Where(l => l.Access == Access.Public.ToString()).Count(),
+                        TotalPages = totalPage,
                     }
                 };
             }
 
+
+            ViewBag.Location = repositoryEvent.GetEvents().Select(e => e.Location).Where(e => e != "" && e != null).Distinct().ToList();
+            ViewBag.TypeEvent = repositoryEvent.GetEvents().Select(e => e.EventType).Distinct().Where(e => e != "" && e != null).ToList();
+            ViewBag.TitleEvent = repositoryEvent.GetEvents().Select(e => e.Title).Distinct().Where(e => e != "" && e != null).ToList();
+
             ViewBag.Start = startSelection.ToShortDateString();
             ViewBag.End = endSelection.ToShortDateString();
 
-            return View("Schedule", model);//schedule);
+            return View("Schedule", model);
         }
 
 
@@ -204,13 +248,13 @@ namespace Hnatob.WebUI.Controllers
             //string root = HttpContext.Current.Server.MapPath("~/App_Data");
             //var provider = new System.Net.Http.MultipartFormDataStreamProvider(root);
             Event dbEntry;// = new Event();
-            //foreach (var key in Request.Form.AllKeys)
-            //{
-            //    foreach (var val in Request.Form.GetValues(key))
-            //    {
-            //        Trace.WriteLine(string.Format("{0}: {1}", key, val));
-            //    }
-            //}
+            foreach (var key in Request.Form.AllKeys)
+            {
+                foreach (var val in Request.Form.GetValues(key))
+                {
+                    Trace.WriteLine(string.Format("{0}: {1}", key, val));
+                }
+            }
 
             //-------------------------------------------------------------------
             int id;
@@ -293,7 +337,6 @@ namespace Hnatob.WebUI.Controllers
                 
                 dbEntry.CommentsToServices.Add(commentToService);
             }
-
 
 
             //-------------------------------------------------------------------

@@ -1,113 +1,181 @@
 ﻿@using Hnatob.WebUI.HtmlHelpers
 @model Hnatob.WebUI.Models.Pagination.PeopleListPaginationViewMode
+@{
+    ViewBag.Title = "Users";
+}
 
-    <table class="table table-striped">
-        <tr>
-            <th>Email</th>
-            <th>Name</th>
-            <th>Surname</th>
-            <th>Birthday</th>
-            <th>Phone number</th>
-            <th>Positions</th>
-            <th></th>
-        </tr>
-        @foreach (var item in Model.People)
+
+<div class="col">
+    @foreach (var item in Model.People)
+    {
+        if (item != null)
         {
-            if (item != null)
+            string dateStr;
+            if (item.employeeView.Birthday != null)
             {
-                string dateStr;
-                if (item.employeeView.Birthday != null)
+                DateTime date = (DateTime)(item.employeeView.Birthday);
+                dateStr = date.ToShortDateString();
+            }
+            else
+            {
+                dateStr = "unknown";
+            }
+            string positions = null;
+            var posts = item.employeeView.Positions?.Select(p => p.Name).ToList();
+            if (posts != null)
+            {
+                foreach (var post in posts)
                 {
-                    DateTime date = (DateTime)(item.employeeView.Birthday);
-                    dateStr = date.ToShortDateString();
+                    if (string.IsNullOrEmpty(positions))
+                    {
+                        positions = post;
+                    }
+                    else
+                    {
+                        positions += ", " + post;
+                    }
                 }
-                else
-                {
-                    dateStr = "";
-                }
-                <tr>
-                    <th>
-                        @Html.DisplayFor(model => item.Email)
-                    </th>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.employeeView.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.employeeView.Surname)
-                    </td>
-                    <td>
-                        <label>@dateStr</label>
-                    </td>
-                    <th>
-                        @Html.DisplayFor(model => item.PhoneNumber)
-                    </th>
-                    <th>
-                        @{
-                            string positions = null;
-                            var posts = item.employeeView.Positions?.Select(p => p.Name).ToList();
-                            if (posts != null)
+            }
+
+        <div class="card mt-1">
+            <h5 class="card-header">
+                <strong>@Html.DisplayFor(model => item.Email)</strong>
+            </h5>
+
+            <div class="card-body">
+                <h5 class="card-title">@Html.DisplayFor(modelItem => item.employeeView.Surname) @Html.DisplayFor(modelItem => item.employeeView.Name) (@dateStr)</h5>
+                <p class="card-text">@Html.DisplayFor(model => item.PhoneNumber)</p>
+                <p>@positions</p>
+                <div class="btn-group float-right" data-target="@item.Id">
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-info" })
+                    <button name="position" type="button" class="btn btn-primary"
+                            data-toggle="modal" data-target="#modal"
+                            style="min-width:110px">
+                        Set position
+                    </button>
+                    <button name="access" type="button" class="btn btn-warning"
+                            data-toggle="modal" data-target="#modal"
+                            style="min-width:100px">
+                        Set access
+                    </button>
+                    <button name="delete" type="button" class="btn btn-danger"
+                            data-toggle="modal" data-target="#modal">
+                        Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+        }
+    }
+</div>
+
+@*<table class="table table-striped">
+    <tr>
+        <th>Email</th>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Birthday</th>
+        <th>Phone number</th>
+        <th>Positions</th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model.People)
+    {
+        if (item != null)
+        {
+            string dateStr;
+            if (item.employeeView.Birthday != null)
+            {
+                DateTime date = (DateTime)(item.employeeView.Birthday);
+                dateStr = date.ToShortDateString();
+            }
+            else
+            {
+                dateStr = "";
+            }
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.employeeView.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.employeeView.Surname)
+                </td>
+                <td>
+                    <label>@dateStr</label>
+                </td>
+                <td>
+                    <strong>@Html.DisplayFor(model => item.PhoneNumber)</strong>
+                </td>
+                <td>
+                    @{
+                        string positions = null;
+                        var posts = item.employeeView.Positions?.Select(p => p.Name).ToList();
+                        if (posts != null)
+                        {
+                            foreach (var post in posts)
                             {
-                                foreach (var post in posts)
+                                if (string.IsNullOrEmpty(positions))
                                 {
-                                    if (string.IsNullOrEmpty(positions))
-                                    {
-                                        positions = post;
-                                    }
-                                    else
-                                    {
-                                        positions += ", " + post;
-                                    }
+                                    positions = post;
+                                }
+                                else
+                                {
+                                    positions += ", " + post;
                                 }
                             }
                         }
-                        <label>@positions</label>
-                    </th>
-                    <td class="btn-group" data-target="@item.Id">
-                        @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-info" })
-                        <button name="position" type="button" class="btn btn-primary"
-                                data-toggle="modal" data-target="#modal"
-                                style="min-width:110px">
-                            Set position
-                        </button>
-                        <button name="access" type="button" class="btn btn-warning"
-                                data-toggle="modal" data-target="#modal"
-                                style="min-width:100px">
-                            Set access
-                        </button>
-                        <button name="delete" type="button" class="btn btn-danger"
-                                data-toggle="modal" data-target="#modal">
-                            Delete
-                        </button>
-                    </td>
-                </tr>
-            }
+                    }
+                    <label>@positions</label>
+                </td>
+                <td class="btn-group" data-target="@item.Id">
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-info" })
+                    <button name="position" type="button" class="btn btn-primary"
+                            data-toggle="modal" data-target="#modal"
+                            style="min-width:110px">
+                        Set position
+                    </button>
+                    <button name="access" type="button" class="btn btn-warning"
+                            data-toggle="modal" data-target="#modal"
+                            style="min-width:100px">
+                        Set access
+                    </button>
+                    <button name="delete" type="button" class="btn btn-danger"
+                            data-toggle="modal" data-target="#modal">
+                        Delete
+                    </button>
+                </td>
+            </tr>
         }
-    </table>
+    }
+</table>*@
 
-    <div>
-        @Html.PageLinks(Model.PagingInfo, x => Url.Action("Users", new { page = x }))
-    </div>
+<div>
+    @Html.PageLinks(Model.PagingInfo, x => Url.Action("Users", new { page = x }))
+</div>
 
 
-    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div id="modalcontent" class="modal-content">
-            </div>
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div id="modalcontent" class="modal-content">
         </div>
     </div>
+</div>
 
 
 
 
 
-    @section scripts{
-        <script src="~/Scripts/custom/modalConfirm.js" type="text/javascript"></script>
-        <script type="text/javascript">
-            "use strict";
-            window.onload = function () {
-                dataSetModal("[name='position']", "#modalcontent", "SetPosition");
-                dataSetModal("[name='access']", "#modalcontent", "SetAccess");
-                dataSetModal("[name='delete']", "#modalcontent", "Delete");
-            }
-        </script>
-    }
+@section scripts{
+    <script src="~/Scripts/custom/modalConfirm.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        "use strict";
+        window.onload = function () {
+            dataSetModal("[name='position']", "#modalcontent", "SetPosition");
+            dataSetModal("[name='access']", "#modalcontent", "SetAccess");
+            dataSetModal("[name='delete']", "#modalcontent", "Delete");
+        }
+    </script>
+}

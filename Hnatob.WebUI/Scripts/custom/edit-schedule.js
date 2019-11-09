@@ -1,6 +1,6 @@
 ﻿"use strict";
 window.onload = function () {
-    init();
+    initEditPage();
     togglesEvent();
     inputStartEvent();
     inputDurationEvent();
@@ -26,11 +26,19 @@ window.onload = function () {
     //sortableList();
 }
 
-function init() {
-    //console.log("init")
-    // Access
-    let access = document.getElementById("Access");
-    if (access.value == "") access.value = "Private";
+function initEditPage() {
+    //console.log("init");
+    // Access.
+    let access = $("#Access");
+    if (access.val() == "") access.val("Private");
+
+
+    console.log(access);
+    console.log(access.val());
+    console.log(access.attr("value"));
+    console.log(access);
+
+
 
     // Date-time
     let valStart = $("[name=Start]").attr("value");

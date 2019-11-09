@@ -20,9 +20,15 @@ namespace Hnatob.WebUI.Models.Pagination
         public int DefaulpPage { get; set; } = 1;
 
         // Общее кол-во страниц
+        private int totalPage;
         public int TotalPages
         {
-            get { return (int)Math.Ceiling((decimal)TotalItems / ItemsPerPage); }
+            get
+            {
+                if (totalPage != 0) return totalPage;
+                return (int)Math.Ceiling((decimal)TotalItems / ItemsPerPage);
+            }
+            set { totalPage = value; }
         }
     }
 }

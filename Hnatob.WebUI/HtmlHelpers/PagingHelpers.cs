@@ -58,11 +58,12 @@ namespace Hnatob.WebUI.HtmlHelpers
                 // Add button
                 //---------------------------------------------------
 
-                if (pagingInfo.TotalPages > 1 
+                if (pagingInfo.TotalPages > 1
                     && pagingInfo.DefaulpPage != 1)
                 {
                     TagBuilder buttonFirst = new TagBuilder("a");
                     buttonFirst.MergeAttribute("href", pageUrl(1));
+                    buttonFirst.MergeAttribute("data-attribute", "1");
                     buttonFirst.InnerHtml = "First";
                     if (pagingInfo.CurrentPage == 1)
                     {
@@ -73,11 +74,14 @@ namespace Hnatob.WebUI.HtmlHelpers
                     buttonBuilder.Append(buttonFirst.ToString());
                 }
 
+
                 if (pagingInfo.CurrentPage > 2
                     && pagingInfo.DefaulpPage != 2)
                 {
                     TagBuilder buttonPrevious = new TagBuilder("a");
                     buttonPrevious.MergeAttribute("href", pageUrl(pagingInfo.CurrentPage - 1));
+                    buttonPrevious.MergeAttribute("data-attribute", (pagingInfo.CurrentPage - 1).ToString());
+
                     buttonPrevious.InnerHtml = "Previous";
                     buttonPrevious.AddCssClass("btn btn-secondary");
                     buttonBuilder.Append(buttonPrevious.ToString());
@@ -87,6 +91,7 @@ namespace Hnatob.WebUI.HtmlHelpers
                 {
                     TagBuilder buttonThisPrevious = new TagBuilder("a");
                     buttonThisPrevious.MergeAttribute("href", pageUrl(pagingInfo.CurrentPage));
+                    buttonThisPrevious.MergeAttribute("data-attribute", (pagingInfo.CurrentPage).ToString());
                     buttonThisPrevious.InnerHtml = "This";
                     if (pagingInfo.CurrentPage != pagingInfo.DefaulpPage)
                     {
@@ -97,8 +102,10 @@ namespace Hnatob.WebUI.HtmlHelpers
                     buttonBuilder.Append(buttonThisPrevious.ToString());
                 }
 
+
                 TagBuilder buttonNow = new TagBuilder("a");
                 buttonNow.MergeAttribute("href", pageUrl(pagingInfo.DefaulpPage));
+                buttonNow.MergeAttribute("data-attribute", (pagingInfo.DefaulpPage).ToString());
                 buttonNow.InnerHtml = "Now";
                 if (pagingInfo.CurrentPage == pagingInfo.DefaulpPage)
                 {
@@ -113,6 +120,7 @@ namespace Hnatob.WebUI.HtmlHelpers
                 {
                     TagBuilder buttonThisNext = new TagBuilder("a");
                     buttonThisNext.MergeAttribute("href", pageUrl(pagingInfo.CurrentPage));
+                    buttonThisNext.MergeAttribute("data-attribute", (pagingInfo.CurrentPage).ToString());
                     buttonThisNext.InnerHtml = "This";
                     if (pagingInfo.CurrentPage != pagingInfo.DefaulpPage)
                     {
@@ -123,21 +131,22 @@ namespace Hnatob.WebUI.HtmlHelpers
                     buttonBuilder.Append(buttonThisNext.ToString());
                 }
 
-                if (pagingInfo.TotalPages - pagingInfo.CurrentPage > 1)
+                if (pagingInfo.TotalPages - pagingInfo.CurrentPage >= 1)
                 {
                     TagBuilder buttonNext = new TagBuilder("a");
                     buttonNext.MergeAttribute("href", pageUrl(pagingInfo.CurrentPage + 1));
+                    buttonNext.MergeAttribute("data-attribute", (pagingInfo.CurrentPage + 1).ToString());
                     buttonNext.InnerHtml = "Next";
                     buttonNext.AddCssClass("btn btn-secondary");
                     buttonBuilder.Append(buttonNext.ToString());
                 }
 
-                if (pagingInfo.TotalPages - pagingInfo.CurrentPage >= 1
-                    || pagingInfo.CurrentPage == pagingInfo.TotalPages
-                    && pagingInfo.CurrentPage != pagingInfo.DefaulpPage)
+                if (pagingInfo.TotalPages - pagingInfo.DefaulpPage >= 1
+                && pagingInfo.TotalPages != pagingInfo.DefaulpPage)
                 {
                     TagBuilder buttonLast = new TagBuilder("a");
                     buttonLast.MergeAttribute("href", pageUrl(pagingInfo.TotalPages));
+                    buttonLast.MergeAttribute("data-attribute", (pagingInfo.TotalPages).ToString());
                     buttonLast.InnerHtml = "Last";
                     if (pagingInfo.CurrentPage == pagingInfo.TotalPages)
                     {
@@ -156,5 +165,42 @@ namespace Hnatob.WebUI.HtmlHelpers
 
             return MvcHtmlString.Create(stringBuilder.ToString());
         }
+
+        //TODO: "previous""this""next"
+        //private static void PTNButtons(PagingInfo pagingInfo, StringBuilder buttonBuilder, Func<int, string> pageUrl)
+        //{
+        //    if (pagingInfo.CurrentPage > 2
+        //        && pagingInfo.DefaulpPage != 2)
+        //    {
+        //        TagBuilder buttonPrevious = new TagBuilder("a");
+        //        buttonPrevious.MergeAttribute("href", pageUrl(pagingInfo.CurrentPage - 1));
+        //        buttonPrevious.InnerHtml = "Previous";
+        //        buttonPrevious.AddCssClass("btn btn-secondary");
+        //        buttonBuilder.Append(buttonPrevious.ToString());
+        //    }
+
+        //    if (pagingInfo.CurrentPage != pagingInfo.DefaulpPage && pagingInfo.CurrentPage != pagingInfo.TotalPages && pagingInfo.CurrentPage != 1)
+        //    {
+        //        TagBuilder buttonThis = new TagBuilder("a");
+        //        buttonThis.MergeAttribute("href", pageUrl(pagingInfo.CurrentPage));
+        //        buttonThis.InnerHtml = "This";
+        //        if (pagingInfo.CurrentPage != pagingInfo.DefaulpPage)
+        //        {
+        //            buttonThis.AddCssClass("selected");
+        //            buttonThis.AddCssClass("btn btn-primary");
+        //        }
+        //        else buttonThis.AddCssClass("btn btn-secondary");
+        //        buttonBuilder.Append(buttonThis.ToString());
+        //    }
+
+        //    if (pagingInfo.TotalPages - pagingInfo.CurrentPage > 1)
+        //    {
+        //        TagBuilder buttonNext = new TagBuilder("a");
+        //        buttonNext.MergeAttribute("href", pageUrl(pagingInfo.CurrentPage + 1));
+        //        buttonNext.InnerHtml = "Next";
+        //        buttonNext.AddCssClass("btn btn-secondary");
+        //        buttonBuilder.Append(buttonNext.ToString());
+        //    }
+        //}
     }
 }

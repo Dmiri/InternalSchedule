@@ -276,6 +276,7 @@
     <Content Include="Scripts\custom\edit-schedule.js" />
     <Content Include="Scripts\custom\general.js" />
     <Content Include="Scripts\custom\modalConfirm.js" />
+    <Content Include="Scripts\custom\view-schedule.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />

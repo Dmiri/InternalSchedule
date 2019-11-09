@@ -15,6 +15,8 @@
             <li>@Html.ActionLink("Contact", "Contact", "Home", null, new { @class = "btn btn-dark", style = "margin:0px 3px 3px 0px" })</li>
             <li>@Html.ActionLink("About", "About", "Home", null, new { @class = "btn btn-dark", style = "margin:0px 3px 3px 0px" })</li>
         </ul>
-        @Html.Partial("_LoginPartial")
+        <div class="ml-auto">
+            @Html.Partial("_LoginPartial")
+        </div>
     </div>
 </header>

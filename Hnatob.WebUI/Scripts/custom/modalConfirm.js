@@ -7,6 +7,7 @@ function dataSetModal(actionAttr, modalBlockName, methodName) {
         $(modalBlockName).children().remove();
         $.post(methodName, { "id": id }, function (menu) {
         }).then((menu) => {
+            console.log(id)
             $(menu).appendTo($(modalBlockName));
         });
     });

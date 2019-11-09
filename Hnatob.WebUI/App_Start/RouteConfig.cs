@@ -21,9 +21,22 @@ namespace Hnatob.WebUI
 
             routes.MapRoute(
                 name: null,
-                url: "{controller}/Page{page}",
-                defaults: new { controller = "Scheduler", action = "Schedule" }
+                url: "Scheduler/Page={page}/Period={pageSize},Access={access},Type={type}/{name}",
+                defaults: new {
+                    controller = "Scheduler",
+                    action = "Schedule",
+                    name = UrlParameter.Optional }
             );
+
+            routes.MapRoute(
+                name: null,
+                url: "Scheduler/Page={page}",
+                defaults: new {
+                    controller = "Scheduler",
+                    action = "Schedule",
+                    name = UrlParameter.Optional }
+            );
+
 
             routes.MapRoute(
                 name: "Default",

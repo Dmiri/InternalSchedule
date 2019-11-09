@@ -1,4 +1,5 @@
 ﻿@model Hnatob.WebUI.Models.ProfileViewModels
+@{ViewBag.Title = "Profile";}
 
 @using (Html.BeginForm("UsersProfile", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
@@ -11,11 +12,12 @@
                 <h5 class="card-title">Security</h5>
                 <div class="form-group row">
                     <label class="@myWidth1colum">Email:</label>
-                    <input type="text" class="form-control @myWidth2colum" value="@Model.Email" readonly />
+                    <input name="Email" type="text" class="form-control @myWidth2colum" value="@Model.Email" readonly />
                 </div>
                 <div class="form-group row">
                     <label class="@myWidth1colum">Phone number: </label>
                     @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" + myWidth2colum, placeholder = "+380xxxxxxxxxx" } })
+                    @Html.ValidationMessageFor(Model => Model.PhoneNumber, "", new { @class = "text-danger" + myWidth2colum })
                 </div>
                 <div>
                     @Html.ActionLink("Change password", "ChangePassword", "Manage", null, new { @class = "btn btn-default btn-primary" })
@@ -33,45 +35,49 @@
                         {
                             htmlAttributes = new { @class = "form-control " + myWidth2colum, placeholder = "Name" }
                         })
+                        @Html.ValidationMessageFor(Model => Model.Name, "", new { @class = "text-danger" })
                     </div>
                     <div class="form-group row">
                         <label class="@myWidth1colum">Patronymic: </label>
                         @Html.EditorFor(model => model.Patronymic, new { htmlAttributes = new { @class = "form-control" + myWidth2colum, placeholder = "Patronymic" } })
+                        @Html.ValidationMessageFor(Model => Model.Patronymic, "", new { @class = "text-danger" })
                     </div>
                     <div class="form-group row">
                         <label class="@myWidth1colum">Surname: </label>
                         @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control" + myWidth2colum, placeholder = "Surname" } })
+                        @Html.ValidationMessageFor(Model => Model.Surname, "", new { @class = "text-danger" })
                     </div>
-
                     <div class="form-group row">
                         <input name="Birthday" type="hidden" class="form-control" value="@Model.Birthday" />
-                        @Html.ValidationMessageFor(model => model.Birthday, "", new { @class = "text-danger" })
                         <label class="@myWidth1colum">Birthday</label>
                         <input id="birthday" class="datepicker form-control @myWidth2colum" placeholder="dd.mm.yyyy" value="@Model.Birthday.ToString("dd.MM.yyyy")">
+                        @Html.ValidationMessageFor(model => model.Birthday, "", new { @class = "text-danger" })
                     </div>
                     <div class="form-group row">
                         <label class="@myWidth1colum">Nickname: </label>
-                        @Html.EditorFor(model => model.Nickname, new { htmlAttributes = new { @class = "form-control" + myWidth2colum, placeholder = "Nickname" }
-})
-                    </div>
-
+                        @Html.EditorFor(model => model.Nickname, new
+                        {
+                            htmlAttributes = new { @class = "form-control" + myWidth2colum, placeholder = "Nickname" }
+                        })
+                        @Html.ValidationMessageFor(Model => Model.Nickname, "", new { @class = "text-danger" })
+                   </div>
                     <div class="form-group row">
-                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                         <label class="@myWidth1colum">Introduction:</label>
-                        <textarea name = "introduction" class="form-control  @myWidth2colum" rows="3">@Model.Introduction</textarea>
+                        <textarea name="Introduction" class="form-control  @myWidth2colum" rows="3">@Model.Introduction</textarea>
+                        @Html.ValidationMessageFor(model => model.Introduction, "", new { @class = "text-danger" })
                     </div>
                     <div class="form-group row">
-                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                         <label class="@myWidth1colum">Description:</label>
-                        <textarea name = "description" class="form-control @myWidth2colum" rows="5">@Model.Description</textarea>
+                        <textarea name="Description" class="form-control @myWidth2colum" rows="5">@Model.Description</textarea>
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
         }
         <div class="form-group pt-2">
             <div class="col-md-offset-2 col-md-10">
-                @Html.ActionLink("Back to Home", "", "", null, new { @class = "btn btn-default btn-dark" })
-                <input id = "submit" type="submit" value="Save" class="btn btn-default btn-success" />
+                @Html.ActionLink("Back to Home", "", "", null, new { @class = "btn btn-default btn-secondary" })
+                <input id="submit" type="submit" value="Save" class="btn btn-default btn-success" />
             </div>
         </div>
     </div>
@@ -80,7 +86,7 @@
 
 @section Scripts
 {
-@*Juquery ui*@
+    @*Juquery ui*@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link href="~/Content/bootstrap-datepicker.css" rel="stylesheet" type="text/css">
 
