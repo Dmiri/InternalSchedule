@@ -233,6 +233,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Helpers\ValidatorsRegex.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Menu.cs" />
     <Compile Include="Models\ModelForEvent.cs" />

@@ -43,3 +43,4 @@ C:\Users\D\source\repos\C#\Hnatob\Hnatob.DataAccessLayer\bin\Debug\Microsoft.Owi
 C:\Users\D\source\repos\C#\Hnatob\Hnatob.DataAccessLayer\bin\Debug\Microsoft.Owin.Security.OAuth.xml
 C:\Users\D\source\repos\C#\Hnatob\Hnatob.DataAccessLayer\bin\Debug\Newtonsoft.Json.xml
 C:\Users\D\source\repos\C#\Hnatob\Hnatob.DataAccessLayer\obj\Debug\Hnatob.DataAccessLayer.Migrations.addPropUserIdToIPerson.resources
+C:\Users\D\source\repos\C#\Hnatob\Hnatob.DataAccessLayer\obj\Debug\Hnatob.DataAccessLayer.Migrations.fildTypeEventRequired.resources

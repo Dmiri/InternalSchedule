@@ -94,6 +94,10 @@
     <Compile Include="Migrations\201906042001569_addPropUserIdToIPerson.Designer.cs">
       <DependentUpon>201906042001569_addPropUserIdToIPerson.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201911110041365_fildTypeEvent-Required.cs" />
+    <Compile Include="Migrations\201911110041365_fildTypeEvent-Required.Designer.cs">
+      <DependentUpon>201911110041365_fildTypeEvent-Required.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -113,6 +117,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201906042001569_addPropUserIdToIPerson.resx">
       <DependentUpon>201906042001569_addPropUserIdToIPerson.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911110041365_fildTypeEvent-Required.resx">
+      <DependentUpon>201911110041365_fildTypeEvent-Required.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

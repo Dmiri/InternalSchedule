@@ -66,7 +66,7 @@ namespace Hnatob.WebUI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult UsersProfile(ProfileViewModels model)
         {
-            string patternText = @"([\w\s-+_.,;:?()]*)";
+            string patternText = @"(^[\w\s-+_.,;:?()]*$)";
             string patternPhone = @"(\+?[0-9]{3}-*[0-9]{2}-*[0-9]{3}-*[0-9]{2}-*[0-9]{2})";
             //string patternEmail = @"(^(\w[-._+\w]*\w@\w[-._\w]*\w\.\w{2,4})$)";
 
@@ -116,9 +116,9 @@ namespace Hnatob.WebUI.Controllers
             bool result = true;
             if (model.Name != null
                 && (!Regex.IsMatch(model.Name, patternText)
-                || Regex.Matches(model.Name, patternText).Count < 2)
-                || Regex.Matches(model.Name, patternText).Count > 2
-                )
+                //|| Regex.Matches(model.Name, patternText).Count < 2)
+                //|| Regex.Matches(model.Name, patternText).Count > 2
+                ))
             {
                 ModelState.AddModelError("Name", "Field \"Name\" must include only letter, number and symbols: \"-+_.,;:?()\"");
                 result = result && false;

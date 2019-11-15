@@ -94,7 +94,6 @@
 <div class="container-fluid d-lg-none">
         @foreach (var item in Model.Schedule)
         {
-
         <div class="card row mt-1">
             <h5 class="card-header">
                 @if (item.Access == "Public")
@@ -137,7 +136,6 @@
                 }
             </div>
         </div>
-
         }
     </div>
 <div class="container-fluid d-none d-lg-block">
@@ -221,17 +219,16 @@
         </table>
     </div>
 </div>
-<div class="form-inline col-12 col-xl-10 ml-auto mr-auto mt-2">
+<div class="form-inline col-xl-10 ml-auto mr-auto mt-2">
     @Html.ActionLink("Create New", "Edit", null,
-                                     new { @class = "btn btn-primary float-left", data_access = "editor", style = "display:none" })
-    <div class="ml-auto form-inline">
+                                     new { @class = "btn btn-primary", data_access = "editor", style = "display:none" })
+    <div class="ml-auto form-inline ml-0">
         <strong style="margin: 0px 30px;">@ViewBag.Start - @ViewBag.End</strong>
 
         @Html.PageLinksForSchedule(Model.PagingInfo, x => { return $"/Scheduler/Page={x}"; })
         @*x => Url.Action("Schedule", new { page = x }))*@
     </div>
 </div>
-
 
 
 <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">

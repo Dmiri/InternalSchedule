@@ -20,6 +20,7 @@ using Hnatob.Domain.Models;
 using Hnatob.Domain.Helper;
 using Hnatob.DataAccessLayer.Context;
 using Hnatob.WebUI.Models.Pagination;
+using Hnatob.WebUI.Models.Helpers;
 
 namespace Hnatob.WebUI.Controllers
 {
@@ -265,7 +266,7 @@ namespace Hnatob.WebUI.Controllers
             var start = DateTime.Parse(datTimeMass[0]); //new DateTime()
             //-------------------------------------------------------------------
             int duration;
-            int.TryParse(Request.Form.GetValues("Duration").FirstOrDefault(), out duration); ;
+            int.TryParse(Request.Form.GetValues("Duration").FirstOrDefault(), out duration);
 
             //-------------------------------------------------------------------
             dbEntry = new Event
@@ -338,16 +339,15 @@ namespace Hnatob.WebUI.Controllers
                 dbEntry.CommentsToServices.Add(commentToService);
             }
 
-
             //-------------------------------------------------------------------
             bool serverValidation = false;
             if (dbEntry != null
                 && !string.IsNullOrWhiteSpace(dbEntry.Title)
                 && !string.IsNullOrWhiteSpace(dbEntry.Location)
                 && validData(dbEntry.Start, true)
-                && (dbEntry.Duration > 0 && dbEntry.Duration < 1440)
+                //&& (dbEntry.Duration > 0 && dbEntry.Duration < 1440)
                 //&& validEmployees(dbEntry.Responsible, true)
-                && validSchedule(dbEntry)
+                && validationCreateSchedule(dbEntry)
                 ) serverValidation = true;
 
             if (serverValidation && ModelState.IsValid)
@@ -411,58 +411,6 @@ namespace Hnatob.WebUI.Controllers
 
 
 
-            bool validData(DateTime value, bool required = false)
-            {
-                if (value == null)// check empty
-                {
-                    if (required)
-                    {
-                        ModelState.AddModelError("", "Values Date and Time required.");
-                        return false;
-                    }
-                    else return true;
-                }
-                if (dbEntry.Start > DateTime.Now && dbEntry.Start < DateTime.MaxValue)// check numbers
-                {
-
-                    Regex r = new Regex(@"[\[\]{}!#\^$|\/\\?*@+()]");
-                    Match m = r.Match(value.ToString());
-                    if (m == null || m.Length > 0)
-                    {
-                        ModelState.AddModelError("", "Field can't have \"[[]{}d!#\\^$|\\/\\?*@+()]\" symbols.");
-                        return false;
-                    }
-                    return true;
-                }
-                ModelState.AddModelError("", $"Date and time mast be betwin now and {DateTime.MaxValue}.");
-                return false;
-            }
-
-
-            bool validSchedule(Event entry)
-            {
-                DateTime dateStart = dbEntry.Start.AddDays(-1);
-                DateTime dateEnd = dbEntry.Start.AddDays(1);
-                var fullEmployee = repositoryEvent.GetEvents()
-                    .Where(p => p.Location == entry.Location
-                    && p.Id != entry.Id
-                    && p.Start > dateStart
-                    && p.Start < dateEnd
-                    )
-                    .OrderBy(p => p.Start)
-                    .ToList();
-                foreach (var item in fullEmployee)
-                {
-                    if (item.Start.AddMinutes(item.Duration) < entry.Start) continue;
-                    else if (item.Start <= entry.Start
-                        || item.Start <= entry.Start.AddMinutes(entry.Duration))
-                    {
-                        ModelState.AddModelError("", "Here was a time intersection with another event.");
-                        return false;
-                    }
-                }
-                return true;
-            }
 
         }
 
@@ -593,5 +541,153 @@ namespace Hnatob.WebUI.Controllers
             if (ev != null) repositoryEvent.Delete(id);
             return RedirectToAction("Schedule");
         }
+
+
+        // Server validation
+        //=========================================================================================
+        private bool validationCreateSchedule(Event model)
+        {
+            bool result = true;
+            var temp = string.IsNullOrEmpty(Regex.Match(model.EventType, ValidatorsRegex.patternText).Value);
+            //model.Access
+            if (model.Access.ToLower() != Access.Private.ToString().ToLower()
+                && model.Access.ToLower() != Access.Public.ToString().ToLower())
+                result = false;
+
+            //model.Start;
+            if (!validSchedule(model)) result = false;
+
+            //model.EventType;
+            if (model.EventType == null
+                || string.IsNullOrEmpty(Regex.Match(model.EventType, ValidatorsRegex.patternText).Value)
+                || model.EventType.Length > ValidatorsRegex.maxMediumLenght)
+            {
+                ModelState.AddModelError("EventType", "Field \"EventType\" must include only letter, number and symbols: \"-+_.,;:?()\"");
+                result = result && false;
+            }
+
+            //model.Title;
+            if (model.Title == null
+                || string.IsNullOrEmpty(Regex.Match(model.Title, ValidatorsRegex.patternText).Value)
+                || model.Title.Length > ValidatorsRegex.maxShortLenght)
+            {
+                ModelState.AddModelError("Title", "Field \"Title\" must include only letter, number and symbols: \"-+_.,;:?()\"");
+                result = result && false;
+            }
+            
+            //model.Location;
+            if (model.Location == null
+                || string.IsNullOrEmpty(Regex.Match(model.Location, ValidatorsRegex.patternText).Value)
+                || model.Location.Length > ValidatorsRegex.maxShortLenght)
+            {
+                ModelState.AddModelError("Location", "Field \"Location\" must include only letter, number and symbols: \"-+_.,;:?()\"");
+                result = result && false;
+            }
+
+            //model.Description;
+            if (model.Description != null
+                && string.IsNullOrEmpty(Regex.Match(model.Description, ValidatorsRegex.patternText).Value)
+                && model.Description.Length > ValidatorsRegex.maxLongLenght)
+            {
+                ModelState.AddModelError("Description", "Field \"Description\" must include only letter, number and symbols: \"-+_.,;:?()\"");
+                result = result && false;
+            }
+
+
+            //model.Duration;
+            if (model.Duration < 10
+                || model.Duration > 1440)
+            {
+                ModelState.AddModelError("Description", "Field \"Duration\" must be betwin 10 min and 24 hour");
+                result = result && false;
+            }
+
+            ////model.CommentsToServices;
+            //if (model.CommentsToServices != null
+            //    && Regex.Matches(model., patternText).Count != 2
+            //    && model.Description.Length < maxLongLenght)
+            //{
+            //    ModelState.AddModelError("CommentsToServices", "Field \"CommentsToServices\" must include only letter, number and symbols: \"-+_.,;:?()\"");
+            //    result = result && false;
+            //}
+
+
+            ////model.Responsibles;
+            //if (model.Responsibles != null
+            //    && Regex.Matches(model.Responsibles., patternText).Count != 2
+            //    && model.Description.Length < maxLongLenght)
+            //{
+            //    ModelState.AddModelError("Responsibles", "Field \"Description\" must include only letter, number and symbols: \"-+_.,;:?()\"");
+            //    result = result && false;
+            //}
+
+
+
+            return result;
+        }
+
+
+        private bool validSchedule(Event entry)
+        {
+            if (!validData(entry.Start, true))
+            {
+                ModelState.AddModelError("Start", "Date and time mast be betwin now and {DateTime.MaxValue}.");
+                //return false;
+            }
+            DateTime dateStart = entry.Start.AddDays(-1);
+            DateTime dateEnd = entry.Start.AddDays(1);
+            var fullEmployee = repositoryEvent.GetEvents()
+                .Where(p => p.Location == entry.Location
+                && p.Id != entry.Id
+                && p.Start > dateStart
+                && p.Start < dateEnd
+                )
+                .OrderBy(p => p.Start)
+                .ToList();
+            foreach (var item in fullEmployee)
+            {
+                if (item.Start.AddMinutes(item.Duration) < entry.Start) continue;
+                else if (item.Start <= entry.Start
+                        || item.Start <= entry.Start.AddMinutes(entry.Duration))
+                {
+                    ModelState.AddModelError("Start", "Here was a time intersection with another event.");
+                    return false;
+                }
+            }
+            return true;
+        }
+
+
+        private bool validData(DateTime value, bool required = false)
+        {
+            if (value == null)// check empty
+            {
+                if (required)
+                {
+                    ModelState.AddModelError("", "Values Date and Time required.");
+                    return false;
+                }
+                else return true;
+            }
+            if (value > DateTime.Now && value < DateTime.MaxValue)// check numbers
+            {
+
+                Regex r = new Regex(@"[\[\]{}!#\^$|\/\\?*@+()]");
+                Match m = r.Match(value.ToString());
+                if (m == null || m.Length > 0)
+                {
+                    ModelState.AddModelError("", "Field can't have \"[[]{}d!#\\^$|\\/\\?*@+()]\" symbols.");
+                    return false;
+                }
+                return true;
+            }
+            //ModelState.AddModelError("", $"Date and time mast be betwin now and {DateTime.MaxValue}.");
+            return false;
+        }
+
+
+
+
+
     }
 }

@@ -34,14 +34,13 @@
                     @Html.LabelFor(model => model.EventType, htmlAttributes: new { @class = "control-label" + @columnName })
                     <div class="dropdown btn-group">
                         @Html.EditorFor(model => model.EventType, new
-            {
-                htmlAttributes =
-             new
-             {
-                 @class = "form-control btn btn-outline-info" + @columnData,
-                 placeholder = "Event's type",
-             }
-            })
+                        {
+                            htmlAttributes = new
+                            {
+                                @class = "form-control btn btn-outline-info" + @columnData,
+                                placeholder = "Event's type",
+                            }
+                        })
                         <button type="button" class="btn btn-info btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="sr-only"> </span>
                         </button>
@@ -134,10 +133,8 @@
 
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" + @columnData })
                 <div class="form-group">
-                    @*@Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })*@
                     <label class="@columnName">Description:</label>
                     <textarea name="Description" class="form-control col-auto" rows="3">@Model.Description</textarea>
-                    @*@Html.TextAreaFor(model => model.Description, 3, 40, new { htmlAttributes = new { @class = "form-control" } })*@
                 </div>
             </div>
             @*---------------------------------------------------------------------------------------------------------------------*@

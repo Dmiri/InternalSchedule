@@ -49,19 +49,11 @@
                 <div class="btn-group float-right" data-target="@item.Id">
                     @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-info" })
                     <button name="position" type="button" class="btn btn-primary"
-                            data-toggle="modal" data-target="#modal"
-                            style="min-width:110px">
-                        Set position
-                    </button>
+                            data-toggle="modal" data-target="#modal">Set position</button>
                     <button name="access" type="button" class="btn btn-warning"
-                            data-toggle="modal" data-target="#modal"
-                            style="min-width:100px">
-                        Set access
-                    </button>
+                            data-toggle="modal" data-target="#modal">Set access</button>
                     <button name="delete" type="button" class="btn btn-danger"
-                            data-toggle="modal" data-target="#modal">
-                        Delete
-                    </button>
+                            data-toggle="modal" data-target="#modal">Delete</button>
                 </div>
             </div>
         </div>

@@ -1,6 +1,5 @@
 C:\Users\D\source\repos\C#\Hnatob\Hnatob.Domain\bin\Debug\Hnatob.Domain.dll
 C:\Users\D\source\repos\C#\Hnatob\Hnatob.Domain\bin\Debug\Hnatob.Domain.pdb
-C:\Users\D\source\repos\C#\Hnatob\Hnatob.Domain\obj\Debug\Hnatob.Domain.csprojResolveAssemblyReference.cache
 C:\Users\D\source\repos\C#\Hnatob\Hnatob.Domain\obj\Debug\Hnatob.Domain.csproj.CoreCompileInputs.cache
 C:\Users\D\source\repos\C#\Hnatob\Hnatob.Domain\obj\Debug\Hnatob.Domain.dll
 C:\Users\D\source\repos\C#\Hnatob\Hnatob.Domain\obj\Debug\Hnatob.Domain.pdb
@@ -32,3 +31,4 @@ C:\Users\D\source\repos\C#\Hnatob\Hnatob.Domain\bin\Debug\Microsoft.AspNet.Ident
 C:\Users\D\source\repos\C#\Hnatob\Hnatob.Domain\bin\Debug\Microsoft.AspNet.Identity.Core.xml
 C:\Users\D\source\repos\C#\Hnatob\Hnatob.Domain\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.xml
 C:\Users\D\source\repos\C#\Hnatob\Hnatob.Domain\bin\Debug\Owin.dll
+C:\Users\D\source\repos\C#\Hnatob\Hnatob.Domain\obj\Debug\Hnatob.Domain.csprojResolveAssemblyReference.cache

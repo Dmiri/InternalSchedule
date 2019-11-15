@@ -155,12 +155,14 @@ function inputStartEvent() {
 
 //=========================================================
 function inputDurationEvent() {
-    let time = document.querySelector("#duration.btn.btn-info.control-label");
-    time.addEventListener("change", function (e) {
-        var parts = e.srcElement.value.split(":");
+    let jTime = $("#duration.btn.btn-info.control-label");
+    jTime.change(function (e) {
+        var parts = $(this).val().split(":");//e.srcElement.value.split(":");
         let result = Number(parts[0]) * 60 + Number(parts[1]);
-        document.querySelector("#Duration").value = result;
-    });
+        $("#Duration").val(result);
+    })
+
+    //time.addEventListener("change", );
 }
 
 
